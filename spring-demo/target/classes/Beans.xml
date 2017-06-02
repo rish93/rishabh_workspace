@@ -1,0 +1,87 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   <bean id = "helloWorld" class = "com.spring.BeanSimple" >
+        <property name = "message" value = "Spring Test" />
+  </bean>
+<bean id="helloWorldSingleton" class="com.spring.BeanScopeSingleton" scope="singleton">
+<!-- <property name="message"   value ="Spring test Singleton" >     </property>
+ --></bean>
+
+
+<bean id="helloWorldPrototype" class ="com.spring.BeanScopePrototype" scope="prototype">
+</bean>
+
+
+<bean id = "BeanInit" class = "com.spring.BeanInitDestroy" init-method = "init"/>
+<bean id = "BeanDestroy" class = "com.spring.BeanInitDestroy" destroy-method = "destroy"/>
+
+
+<!-- use the init-method attribute to specify the name of the method that has a void no-argument signature.
+  use the destroy-method attribute to specify the name of the method that has a void no-argument signature-->
+
+</beans>
+
+<!-- provide blue print for bean that we want to instantiate-->
+
+
+<!-- The Beans.xml is used to assign unique IDs to different beans and to control the creation of objects with different values without
+ impacting any of the Spring source files. For example, using the following file you can pass any value for "message" variable and you can print
+  different values of message without impacting HelloWorld.java and MainApp.java files. -->
+  
+  
+  
+  <!-- When Spring application gets loaded into the memory, Framework makes use of the above configuration file to create all the beans 
+  defined and assigns them a unique ID as defined in <bean> tag. You can use <property> tag to pass the values of different variables used at the time of
+   object creation -->
+   
+   
+   
+   <!-- 
+  ** Spring BeanFactory Container
+This is the simplest container providing the basic support for DI and is defined by the org.springframework.beans.factory.BeanFactory interface. 
+The BeanFactory and related interfaces, such as BeanFactoryAware, InitializingBean, DisposableBean, are still present in Spring for the purpose 
+of backward compatibility with a large number of third-party frameworks that integrate with Spring.
+ **Spring ApplicationContext Container
+This container adds more enterprise-specific functionality such as the ability to resolve textual messages from a properties file and the ability 
+to publish application events to interested event listeners. This container is defined by the org.springframework.context.ApplicationContext interface. -->
+
+
+
+
+<!-- 
+
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+   A simple bean definition
+   <bean id = "..." class = "...">
+      collaborators and configuration for this bean go here
+   </bean>
+
+   A bean definition with lazy init set on
+   <bean id = "..." class = "..." lazy-init = "true">
+      collaborators and configuration for this bean go here
+   </bean>
+
+   A bean definition with initialization method
+   <bean id = "..." class = "..." init-method = "...">
+      collaborators and configuration for this bean go here
+   </bean>
+
+   A bean definition with destruction method
+   <bean id = "..." class = "..." destroy-method = "...">
+      collaborators and configuration for this bean go here
+   </bean>
+
+   more bean definitions go here
+   
+</beans> -->
