@@ -15,4 +15,7 @@ public class BeanInitDestroy {
 	   public void destroy() {
 	      System.out.println("Bean will destroy now.");
 	   }
+	//   The initIt() method is called, after the message property is set, and the
+	  // destroy() method is called after the context.close();
+
 }

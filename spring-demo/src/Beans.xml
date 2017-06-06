@@ -6,7 +6,8 @@
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
    <bean id = "helloWorld" class = "com.spring.BeanSimple" >
-        <property name = "message" value = "Spring Test" />
+      <!--   <property name = "message" value = "Spring Test" /> -->
+      <constructor-arg value="CONSTRUCTOR INIT"/><!--to initialize bean using constructor doesnt have name tag but only value attribute -->
   </bean>
 <bean id="helloWorldSingleton" class="com.spring.BeanScopeSingleton" scope="singleton">
 <!-- <property name="message"   value ="Spring test Singleton" >     </property>
@@ -21,7 +22,9 @@
 <bean id = "BeanDestroy" class = "com.spring.BeanInitDestroy" destroy-method = "destroy"/>
 
 
-<!-- use the init-method attribute to specify the name of the method that has a void no-argument signature.
+<!--
+
+ use the init-method attribute to specify the name of the method that has a void no-argument signature.
   use the destroy-method attribute to specify the name of the method that has a void no-argument signature-->
 
 </beans>

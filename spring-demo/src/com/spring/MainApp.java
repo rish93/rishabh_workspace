@@ -1,13 +1,13 @@
 package com.spring;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class MainApp {
    public static void main(String[] args) {
 	   // Triangle triangle = new Triangle(); instantiate triangle object  using new operator 
-	   
 	    //instantiate using bean factory to do it
 //	    BeanFactory factory= new  XmlBeanFactory(new FileSystemResource("spring.xml"));
 //	    Triangle triangle1=(Triangle)factory.getBean("triangle");
@@ -20,7 +20,10 @@ public class MainApp {
 	 //xml file for configuration shld be in project path for Bean Factory class   
 	    
 	   
-	   
+	   ConfigurableApplicationContext con =new ClassPathXmlApplicationContext("Beans.xml");
+	/*That means that when you use an application context, i.e. get beans from it you only use it as an ApplicationContext but when you manage its life cycle (initialization and
+	 *  destruction) you use methods from ConfigurableApplicationContext*/
+	   //application context is read only
 	   ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");//ClassPathXmlApplicationContext(). This API loads beans configuration  
 									      //file and eventually based on the provided API, it takes care of creating and initializing all the objects, i.e.
 									      //beans mentioned in the configuration file.
@@ -32,8 +35,8 @@ public class MainApp {
  //calling class doesnt care if spring generate object using cosntructor or setter 
 	  
 	   System.out.println(objA);//com.spring.BeanSimple@731a74c
-	   objA.setType("String");
-	  objA.getType();//String
+	//   objA.setType("String");
+	  objA.getType();//String  //output constructorINIT when constructor ibitialization takes palec
 	   
 	   objA.getMessage();//: Spring Test
  //System.out.println(objA);
@@ -47,7 +50,7 @@ public class MainApp {
 
  BeanScopeSingleton objC =(BeanScopeSingleton)context.getBean("helloWorldSingleton");
  objC.getMessage(); //Spring will call your getMessage() method multiple times to try to create a new object (since you want prototype scope), 
-                    //the JVM will return the same String instance anyway. default scope is singleton   use the prototype scope for all state-full beans and the
+   System.out.println("``````````````");                 //the JVM will return the same String instance anyway. default scope is singleton   use the prototype scope for all state-full beans and the
   					//singleton scope for stateless beans.
 
  
@@ -55,22 +58,44 @@ public class MainApp {
  
  
  
- BeanScopePrototype objD=(BeanScopePrototype)context.getBean("helloWorldPrototype");
- objD.setMessage("helloWorldPrototype");
- objD.getMessage();
+ BeanScopePrototype objD1=(BeanScopePrototype)context.getBean("helloWorldPrototype");
+ objD1.setMessage("helloWorldPrototype");
+ objD1.getMessage();
+ BeanScopePrototype objD2=(BeanScopePrototype)context.getBean("helloWorldPrototype");
 
+ objD2.getMessage();//will get null coz its statefull bean creates new obj everytime
+ 
+ System.out.println("--------------end bean scope test---------------");
+ 
  BeanScopePrototype objE=(BeanScopePrototype)context.getBean("helloWorldPrototype");
- objE.getMessage();    //will get null coz its statefull bean creates new obj everytime
+objE.setMessage("try!!");
+ objE.getMessage();    
  
  
  
  
  
- AbstractApplicationContext absContext = new ClassPathXmlApplicationContext("Beans.xml");
- BeanInitDestroy objF = (BeanInitDestroy) context.getBean("helloWorld");
+ //AbstractApplicationContext absContext = new ClassPathXmlApplicationContext("Beans.xml");
+ BeanInitDestroy objF = (BeanInitDestroy) context.getBean("BeanInit");
+ objF.destroy();
+ //objF.getMessage();
+
+ objF.init();
  objF.getMessage();
- ((AbstractApplicationContext) context).registerShutdownHook();
  
+ con.close();
+ //((AbstractApplicationContext) context).registerShutdownHook(); 
+ /*In spring, 
+ registerShutdownHook() method is used to shut down IoC container in non-web
+ applications. It shuts down IoC container gracefully. 
+ In non web based application like desk top application it is required to call 
+ registerShutdownHook. In our desktop application we need to release all resources
+  used by our spring application. So we need to ensure that after application is 
+  finished, destroy method on our beans should be called. In web-based application 
+  ApplicationContext already implements code to shut down the IoC container properly
+  . But in desktop application we need to call registerShutdownHook to shutdown IoC 
+  container properly.
+ */
  
  
  
