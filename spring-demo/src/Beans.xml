@@ -22,6 +22,29 @@
 <bean id = "BeanDestroy" class = "com.spring.BeanInitDestroy" destroy-method = "destroy"/>
 
 
+<bean id = "constructorOverloading" class="com.spring.BeanConstructorOverloading"><!-- depending on the datatype required by constructor
+											data conversion takes place taken care by sppring -->
+<constructor-arg value="this is message 1"/>
+
+
+</bean>
+
+
+
+<bean id = "constructorOverloading2" class="com.spring.BeanConstructorOverloading">
+
+<constructor-arg type="int" value="21"/><!-- or mention the specific type of constructor that wante to call
+-->
+</bean>
+
+
+<bean id="constructorOverloading3" class="com.spring.BeanConstructorOverloading">
+<constructor-arg type="String" value="again overloadedtime" />
+<constructor-arg type="int" value="3"/><!-- can also specifyindex depending on the order of parameter
+ie. index ="1" for 1st parameter in argument 1 also index =2 for second argument -->
+</bean>
+
+
 <!--
 
  use the init-method attribute to specify the name of the method that has a void no-argument signature.
