@@ -84,6 +84,28 @@ objE.setMessage("try!!");
  objF.getMessage();
  
  con.close();
+
+ BeanConstructorOverloading bcoObj=(BeanConstructorOverloading)context.getBean("constructorOverloading");
+ System.out.println(bcoObj.getMsg());
+ System.out.println("______________________________");
+ BeanConstructorOverloading bcOBJ1=(BeanConstructorOverloading)context.getBean("constructorOverloading2");
+ 
+ System.out.println(bcOBJ1.getMsg());
+ System.out.println( bcOBJ1.toString());
+ 
+ 
+ 
+ BeanConstructorOverloading bc3=(BeanConstructorOverloading)context.getBean("constructorOverloading3");
+ System.out.println("bc3 output\t"+bc3.getMsg());
+ //----------------------------------------------------------------------------------
+ 
+ //for injecting object
+ //when a bean is returning an object having reference with another bean having value use 'ref'
+ //attribute in config file
+ ObjectInjection ObjI=(ObjectInjection)context.getBean("");
+ //----------------------------------------------------------------------------------
+
+ 
  //((AbstractApplicationContext) context).registerShutdownHook(); 
  /*In spring, 
  registerShutdownHook() method is used to shut down IoC container in non-web

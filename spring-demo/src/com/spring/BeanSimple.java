@@ -14,6 +14,9 @@ public class BeanSimple {
 	   {
 		   this.type=type;
 	   }
+	    
+	    
+	    
 	     public String getType() {
 		  System.out.println(type);
 	    	 return type;
