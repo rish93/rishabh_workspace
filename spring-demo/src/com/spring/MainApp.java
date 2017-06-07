@@ -102,10 +102,28 @@ objE.setMessage("try!!");
  //for injecting object
  //when a bean is returning an object having reference with another bean having value use 'ref'
  //attribute in config file
- ObjectInjection ObjI=(ObjectInjection)context.getBean("");
+ ObjectInjection ObjI=(ObjectInjection)context.getBean("InjectObject");
+ System.out.println(ObjI.getVal().getName()+ObjI.getVal().getContact());
+ 
+ //dont have to do  get bean of each object we are looking for
+ //just get the first level obj we need and we can get nested bean from that
+ //spring bean create bean in order and returns
+ 
  //----------------------------------------------------------------------------------
 
+ //inner bean aliases and idref
  
+ //inner bean defined inside the property of already existing bean
+ //and we isolate the bean only here it is required
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ //----------------------------------------------------------------------------------
+
  //((AbstractApplicationContext) context).registerShutdownHook(); 
  /*In spring, 
  registerShutdownHook() method is used to shut down IoC container in non-web

@@ -18,6 +18,11 @@
 </bean>
 
 
+<!--
+
+ use the init-method attribute to specify the name of the method that has a void no-argument signature.
+  use the destroy-method attribute to specify the name of the method that has a void no-argument signature-->
+
 <bean id = "BeanInit" class = "com.spring.BeanInitDestroy" init-method = "init"/>
 <bean id = "BeanDestroy" class = "com.spring.BeanInitDestroy" destroy-method = "destroy"/>
 
@@ -45,10 +50,26 @@ ie. index ="1" for 1st parameter in argument 1 also index =2 for second argument
 </bean>
 
 
-<!--
+<!-- OBJECT INJECTION -->
 
- use the init-method attribute to specify the name of the method that has a void no-argument signature.
-  use the destroy-method attribute to specify the name of the method that has a void no-argument signature-->
+<!-- will create bean from referencing bean and assign to mmber varibale mentioned in property  -->
+
+
+<bean id="InjectObject" class="com.spring.ObjectInjection"><!-- ask spring to get object from  
+InjectObj id bean and set the property of InjectObject bean's property-->
+<property name="Val"  ref="InjectObj"/> <!--  value=""--><!-- value set is actually the reference to another bean in xml 
+ie. having id InjectObj so instead of value tag attribute use ref attribute-->
+</bean>
+
+<bean id="InjectObj" class="com.spring.ObjectInjectionProvider">   <!-- can be called directly from main class using its 
+id but instead we will link it to another bean returning an object -->
+<property name="name" value="rishabh"/>
+<property name="contact"  value="8867620765"/>
+
+
+</bean>
+
+
 
 </beans>
 

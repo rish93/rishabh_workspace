@@ -3,19 +3,20 @@ package com.spring;
 public class ObjectInjectionProvider {
 
 	private String name;
+	private String contact;
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getContact() {
+	public String getContact() {
 		return contact;
 	}
-	public void setContact(int contact) {
+	public void setContact( String contact) {
 		this.contact = contact;
 	}
-	private int contact;
+
 	
 	
 	

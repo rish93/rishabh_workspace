@@ -2,15 +2,15 @@ package com.spring;
 
 public class ObjectInjection {
 
-	private ObjectInjectionProvider getVal;
+	private ObjectInjectionProvider Val;
 
-	public ObjectInjectionProvider getGetVal() {
-		return getVal;
+	public ObjectInjectionProvider getVal() {
+		return Val;
 	}
 
-	public void setGetVal(ObjectInjectionProvider getVal) {
-		this.getVal = getVal;
+	public void setVal(ObjectInjectionProvider val) {
+		Val = val;
 	}
-	
+
 	
 }
