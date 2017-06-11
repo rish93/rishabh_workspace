@@ -68,7 +68,59 @@ id but instead we will link it to another bean returning an object -->
 
 
 </bean>
+<!-- INNER BEANS -->
 
+<!-- putting bean definition in property of another bean 
+it's advantage is that bean is isolated to place where it is only requied--> 
+
+<bean id="innerbean" class="com.spring.InnerBean">
+
+
+<property name="innerbeanval1" value="inner value 1"/>
+<property name="innerbeanval2"  value="inner value 2"/> 
+<property name ="innerbeanval3" >  <!--can have either value/ref/ or inner element value not work for  for property when inner bean is configured coz inner bean wil process the value -->
+	
+<bean class="com.spring.BeanSimple"><!-- inner bean can have id but of no use -->
+ <constructor-arg value="INNERBEAN FROM BEAN SIMPLE innerbeanval3"/>
+</bean>
+</property>
+</bean>
+
+
+<!-- ALIAS -->
+<alias name ="helloWorldSingleton" alias="helloWorldSingletonALIASNAME"/> <!-- give a name of bean  for u want to create an
+ aliasand mention its alias name  -->
+
+
+<!-- COLLECTION -->
+
+
+<bean id="collectionbean" class="com.spring.CollectionBean">
+
+<property name="names">
+<list>
+ <ref bean="InjectObj"/><!-- can use this way to initialize value from database -->
+
+</list>
+</property>
+
+</bean>
+
+
+
+<bean id="autowire" class="com.spring.AutowiringBean" autowire="byName">
+<!-- byName will see if member variable with the same name of bean id exist 
+of bean id exist if yes it will create a reference automatically for that 
+reference variable withput mentioning property for that bean  -->
+
+</bean>
+<!-- member variable that has to be autowired it's name and 
+bean id which is getting checked through autowired atribute byname shld be same -->
+<bean id="autoVal1" class="com.spring.autowiringData">
+<property name="autoName" value="rishabh autowired"/>
+<property name="autoContact" value="74654616
+1 autowired"/>
+</bean>
 
 
 </beans>

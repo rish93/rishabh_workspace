@@ -115,14 +115,78 @@ objE.setMessage("try!!");
  
  //inner bean defined inside the property of already existing bean
  //and we isolate the bean only here it is required
+ System.out.println("---------------------inner bean-----------------------------------");
+ InnerBean ib= (InnerBean)context.getBean("innerbean");
+ System.out.println(ib.getInnerbeanval1());
+ System.out.println(ib.getInnerbeanval2());
+ System.out.println(ib.getInnerbeanval3());
+  
+ //----------------------------------------------------------------------------------
+
+ //aliases
+ //aliases is a name that we give  to same bean
+ //can give reference using aliases <alias> tag in xml
  
+ //test by calling single ton bean using its alias name
+ //can give as many aliases for a bean
+ //can also give alias attribute during bean definition using name definition
+//goood practise is to call using id but not name or alias coz id is uniques
  
- 
- 
- 
- 
+ BeanScopeSingleton obAlias =(BeanScopeSingleton)context.getBean("helloWorldSingletonALIASNAME");
+ System.out.println("``````calling singleton using alias name````````");   
+ obAlias.getMessage(); //Spring will call your getMessage() method multiple times to try to create a new object (since you want prototype scope), 
+   System.out.println("``````````````");   
  
  //----------------------------------------------------------------------------------
+//IDREF 
+ //an alternative to ref as ref can be for any bean's ID,Name or Alias
+   //idref is only for depicting that bean is referenced from id
+   //kind of restriction in referencing it has to be withing property tag
+   //<property>
+   //<idref="">
+   //</property>
+   
+//----------------------------------------------------------------------------------
+//initialization collection
+   //to initialize member variable which is a collection
+   //core interface lIST set ad map core interfaces for collection are 
+   //provided as tag for spring xml 
+   
+   CollectionBean cb=(CollectionBean)context.getBean("collectionbean");
+   System.out.println(cb.getNames());
+//----------------------------------------------------------------------------------
+//AUTOWIRING
+  //autowiring a feature provided by spring framework
+   //that help skip/reducing some of the configurtion of refrences
+   
+   //if name of the beans is same as member variables then we can make spring framework to
+   //autowire bean based on names by using attribute autowire="byname"
+   //or bytype (bean of one bean type of one particular class for which is bean is defined)
+   //bytype is done only when single bean of one type class is defined in xml
+   //autowire="constructor" same as byname instead of setter injection it does constructor injectiion
+   //but should have one bean per type in constructor injetcion
+   //without autowirng we need to manually to referencing of each mem ber variable 
+   //using property tag 
+   
+   //less bean can use autowired efficiently for more bean prefer manual property referencing
+   AutowiringBean ab =(AutowiringBean)context.getBean("autowire");
+   System.out.println(ab.getAutoVal1().getAutoName());//rishabh autowired
+   System.out.println(ab.getAutoVal1().getAutoContact());//74654616 1 autowired
+   
+   //----------------------------------------------------------------------------------
+
+   //usinGAPPLICATION CONTEXT AWARE
+   
+   
+//----------------------------------------------------------------------------------
+
+   
+   
+   
+   
+   
+   
+   //----------------------------------------------------------------------------------
 
  //((AbstractApplicationContext) context).registerShutdownHook(); 
  /*In spring, 
