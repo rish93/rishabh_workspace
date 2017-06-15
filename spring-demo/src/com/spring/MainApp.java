@@ -175,13 +175,37 @@ objE.setMessage("try!!");
    
    //----------------------------------------------------------------------------------
 
-   //usinGAPPLICATION CONTEXT AWARE
+   //usinG APPLICATION CONTEXT AWARE?????????????
+  
+   //----------------------------------------------------------------------------------
+
+   //BEAN NAME AWARE
+   /*Spring provides BeanNameAware interface which allows us to have
+   access to name of the bean defined in bean definition.
+   */
    
    
-//----------------------------------------------------------------------------------
+   
+   //----------------------------------------------------------------------------------
+   
+   
+//   ApplicationContextAwareBean awreObj =(ApplicationContextAwareBean)context.getBean("");
+//  System.out.print( awreObj.getPobj());
+   //bad practise as it bind it to spring 
+   //maybe if we need context in bean itself case1(for bean we need singleton context 
+  //but dependent (eg point a b c)in that bean if they happen to be prototype  that will not work
+   /*) since triangle is singleton point a b c will also be cretaed when container loads
+    even to though point a b c are prototype but since parent triangle is initialized once points will also be initialized only once
+     *
+     */
+   
+   
+   
+   
+   //----------------------------------------------------------------------------------
 
    
-   
+   //bean defn inhritence
    
    
    

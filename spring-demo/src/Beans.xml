@@ -122,6 +122,15 @@ bean id which is getting checked through autowired atribute byname shld be same 
 1 autowired"/>
 </bean>
 
+<!-- Application context aware -->
+<bean id="appcontextaware" class="com.spring.ApplicationContextAwareBeanName"/>
+
+
+<!-- bean name aware -->
+ <bean id="first" scope="prototype" class="com.spring.BeanNameAware"/>
+ <bean id="second" scope="prototype" class="com.spring.BeanNameAware"/>
+
+
 
 </beans>
 
