@@ -175,20 +175,17 @@ objE.setMessage("try!!");
    
    //----------------------------------------------------------------------------------
 
-   //usinG APPLICATION CONTEXT AWARE?????????????
+  
   
    //----------------------------------------------------------------------------------
 
-   //BEAN NAME AWARE
-   /*Spring provides BeanNameAware interface which allows us to have
-   access to name of the bean defined in bean definition.
-   */
+ 
    
    
    
    //----------------------------------------------------------------------------------
    
-   
+   //usinG APPLICATION CONTEXT AWARE?????????????
 //   ApplicationContextAwareBean awreObj =(ApplicationContextAwareBean)context.getBean("");
 //  System.out.print( awreObj.getPobj());
    //bad practise as it bind it to spring 
@@ -199,21 +196,81 @@ objE.setMessage("try!!");
      *
      */
    
-   
+   //BEAN NAME AWARE
+   /*Spring provides BeanNameAware interface which allows us to have
+   access to name of the bean defined in bean definition.
+   */
    
    
    //----------------------------------------------------------------------------------
 
    
    //bean defn inhritence
+   /* if we have many bean definition in xml and have common set of values 
+    * defined cross many of the beans then we can have one bean having common definitions4
+    * then we can inherit it across other beans
+    * parent Bean which have common definition can be a bean in itself
+    *  or abstract bean definitionwhich mean there is no bean created for it it has templating for ither beans
+    *  
+    * */
+ /*  You can define any number of beans and extend them by using the parent  
+  * attribute in the bean element. Child bean can inherit all the values, properties, methods, etc.
+  *  from the parent beans. If you define the same method in the child bean, it simply overrides them
+  *   in the child bean.
+  */
+   BeanDefinitionInheritence bdInhertObj=(BeanDefinitionInheritence)context.getBean("parent");
+   System.out.println(bdInhertObj.getName());
+   System.out.println(bdInhertObj.getSurname());
+   System.out.println(bdInhertObj.getCountry());
    
    
-   
-   
-   //----------------------------------------------------------------------------------
+   ChildBeanInheritence childObj =(ChildBeanInheritence)context.getBean("child1");
+   System.out.println(childObj.getName());
+   System.out.println(childObj.getSurname());
 
- //((AbstractApplicationContext) context).registerShutdownHook(); 
- /*In spring, 
+   System.out.println(childObj.getCountry());// country is not initialize in property for child bean in xml still
+   //it got its valye from parent bean
+
+   
+   
+   //-------------------------------------------
+   //MERGING USiNG MERGE +TRUE IN CHILD INHERITED BEAN HAVING PARENT ATTRIBUTE
+   //same property shld be there in child and parent
+   BeanListMerge mergeListObj=(BeanListMerge)context.getBean("mergelist");
+   
+   System.out.println(mergeListObj.getMergeVal());
+   //---------------------------------------
+
+   //IF WE USE abstract=true; In PARENT THEN NO BEAN IS CREATED FOR 
+   //parent but only it is used as a template for other bean
+   //’ bean is a pure template, for bean to inherit it only, if you try to instantiate it, you will encounter the following error message.
+
+  // BeanListMerge mergeObjAbstract=(BeanListMerge)context.getBean("merge");
+   //{{{{{{Error creating bean with name 'merge': Bean definition is abstract}}}}}}}}
+//abtsract exception
+   
+   
+   //---------------------------------------
+  // ABSTRACTAPPLICATIONCONTEXT
+   
+   AbstractApplicationContext context2=new ClassPathXmlApplicationContext("Beans.xml"); 
+ //make a call to register hook o that shutdownhook is registered and when application stops
+  //spring know that it is time close and destroy all the beans
+   context2.registerShutdownHook();
+AbstractApplicationContextBean Abstractob= (AbstractApplicationContextBean)context2.getBean("abstractapplicationcontext");
+
+System.out.println(Abstractob.getName());
+   //now we can configure init and destroy method for all the beans 
+   //to initialize the bean or to destroy bean for cleanup
+  //
+   /*for that use abstract application context that registers javahooks 
+    * for java program so that whhen main method ends then hook is called and context shutdown
+    * spring container
+    * 
+    * we register the hook and demonstrate callback method
+    * */
+   
+   /*In spring, 
  registerShutdownHook() method is used to shut down IoC container in non-web
  applications. It shuts down IoC container gracefully. 
  In non web based application like desk top application it is required to call 

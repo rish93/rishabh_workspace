@@ -123,12 +123,63 @@ bean id which is getting checked through autowired atribute byname shld be same 
 </bean>
 
 <!-- Application context aware -->
-<bean id="appcontextaware" class="com.spring.ApplicationContextAwareBeanName"/>
+<bean id="appcontextaware" class="com.spring.ApplicationContextAwareBean"/>
 
 
 <!-- bean name aware -->
  <bean id="first" scope="prototype" class="com.spring.BeanNameAware"/>
  <bean id="second" scope="prototype" class="com.spring.BeanNameAware"/>
+
+<!--BEAN DEFINITION INHERITENCE  -->
+
+<!-- configuration for parent bean will be inherited even we dont call it explicitly
+but will call child bean -->
+
+<bean id="parent" class="com.spring.BeanDefinitionInheritence">
+<property name="name" value="rishabh"/> 
+<property name ="surname" value="mankatala"/>
+<property name="country" value="India"/>
+</bean>
+
+<bean id="child1"  class="com.spring.ChildBeanInheritence" parent="parent">
+<property name ="name" value="prateek"/>
+<property name="surname" value="mankatala"/>
+
+<!-- country member variable is not initialized
+still on calling from main class it will take its value from pripoperty of parent bean
+due to bean definition inheritence -->
+</bean>
+
+<!-- to merge element defined in the child bean to elements define in parent bean for the collection used in spring -->
+
+<bean id="merge" class="com.spring.BeanListMerge" abstract="true">
+<property name="mergeVal">
+<list>
+<value> 1st value </value>
+</list>
+</property>
+
+
+</bean>
+
+
+<bean id="mergelist" class="com.spring.BeanListMerge" parent="merge">
+
+<property name="mergeVal">
+<list merge="true">   <!-- with merge =tru o/p 1stvalue,2ndvalue
+withoout it will get override o/p 2ndvalue -->
+<value>2nd value</value>
+</list>
+</property>
+
+</bean>
+
+
+<bean id="abstractapplicationcontext" class="com.spring.AbstractApplicationContextBean">
+<property name="name" value="abstractapplicationcontext"/>
+
+</bean>
+
 
 
 
