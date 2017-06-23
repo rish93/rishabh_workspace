@@ -259,10 +259,16 @@ objE.setMessage("try!!");
    context2.registerShutdownHook();
 AbstractApplicationContextBean Abstractob= (AbstractApplicationContextBean)context2.getBean("abstractapplicationcontext");
 
-System.out.println(Abstractob.getName());
+System.out.println(Abstractob.getName()+"\tline 262");
    //now we can configure init and destroy method for all the beans 
    //to initialize the bean or to destroy bean for cleanup
   //
+//on enabling both ways for bean destroy and bean initializing
+//INITIALIZINGBEAN DISPOSABLE BEAN TAKES PRIORITY WIll be called first then will be called 
+//our custom method
+
+
+
    /*for that use abstract application context that registers javahooks 
     * for java program so that whhen main method ends then hook is called and context shutdown
     * spring container
@@ -282,10 +288,20 @@ System.out.println(Abstractob.getName());
   container properly.
  */
  
- 
- 
-  
- 
+ /////////////////////////////////////////////////////////////////////////////////////////////////
+ /*SpringBEANPOST PROCESSORS*/
+  //classes that tell spring that some processing needs to be done after initializing bean
+
+//significant point single method runs for every initialization of everybean 
+//present in xml
+//Wen every bean is initialized in spring xml then bean post processor is called
+//there is seperate class for POST PROCESSOR and method of that class is called after bean initialization from xml
+//{{most common use of bean post proccesor is to extend the functionality
+// of framework by making configuration related coding }}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
  /* ******with without spring********
 "Design your objects so that they rely on an outside force to supply them with what they need, 
 with the expectation that these dependencies are always injected before anybody asks them to start doing their usual jobs

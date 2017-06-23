@@ -1,6 +1,6 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
-<beans xmlns = "http://www.springframework.org/schema/beans"
+<beans default-destroy-method="cleanUp" default-init-method="myInit" xmlns = "http://www.springframework.org/schema/beans"
    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
@@ -175,14 +175,18 @@ withoout it will get override o/p 2ndvalue -->
 </bean>
 
 
-<bean id="abstractapplicationcontext" class="com.spring.AbstractApplicationContextBean">
+<bean id="abstractapplicationcontext"  class="com.spring.AbstractApplicationContextBean"><!-- on removing this it will work init-method="myInit" destroy-method="cleanUp"-->
 <property name="name" value="abstractapplicationcontext"/>
-
+<!-- so when been is been initialized this method will be called mentioned in init-method
+alternate to  afterPropertySet and destroy method of interface disposableBean and initializingBean -->
 </bean>
 
+<!-- //INSTEAD OF CONFIGURING INIT AND DESTROY methd for all the been seperately we can define it globally in BEANS tag using default-init-method attribute -->
 
+	<bean class="com.spring.PostProcessorDemo"/><!-- not creating id coxz no other class is dependent on this class we do not have to do get bean of this class -->
+	<!-- we can also define order in which bean will execute -->
 
-
+	
 </beans>
 
 <!-- provide blue print for bean that we want to instantiate-->
