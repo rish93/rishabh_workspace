@@ -38,9 +38,10 @@ public class BeanSimple {
 	  
 	    
 	    
-	    public void getMessage(){
+	    public String getMessage(){
 	      System.out.println(": " + message  +"");
-	       }
+	     return message;
+	    }
 	}
 
 

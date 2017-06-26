@@ -20,7 +20,7 @@ public class MainApp {
 	 //xml file for configuration shld be in project path for Bean Factory class   
 	    
 	   
-	   ConfigurableApplicationContext con =new ClassPathXmlApplicationContext("Beans.xml");
+	   ConfigurableApplicationContext  con =new ClassPathXmlApplicationContext("Beans.xml");
 	/*That means that when you use an application context, i.e. get beans from it you only use it as an ApplicationContext but when you manage its life cycle (initialization and
 	 *  destruction) you use methods from ConfigurableApplicationContext*/
 	   //application context is read only
@@ -36,9 +36,9 @@ public class MainApp {
 	  
 	   System.out.println(objA);//com.spring.BeanSimple@731a74c
 	//   objA.setType("String");
-	  objA.getType();//String  //output constructorINIT when constructor ibitialization takes palec
-	   
-	   objA.getMessage();//: Spring Test
+	  System.out.println(objA.getType());//String  //output constructorINIT when constructor ibitialization takes palec
+	   objA.setMessage("CUSTOM MESSAGE qqqqqqqqq");
+	  System.out.println(objA.getMessage()+"qqqqqqqqqqq");//: Spring Test
  //System.out.println(objA);
    
  /////with singleton exmple
@@ -299,10 +299,140 @@ System.out.println(Abstractob.getName()+"\tline 262");
 //{{most common use of bean post proccesor is to extend the functionality
 // of framework by making configuration related coding }}
 
+///
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*Spring BEan Factory Post Processore*/
+//executed before bean factory initilization
+//o/p
+//my bean factory org.springframework.beans.factory.support.DefaultListableBeanFactory@13a57a3b: defining beans [helloWorld,helloWorldSingleton,helloWorldPrototype,BeanInit,BeanDestroy,constructorOverloading,constructorOverloading2,constructorOverloading3,InjectObject,InjectObj,innerbean,collectionbean,autowire,autoVal1,appcontextaware,first,second,parent,child1,merge,mergelist,abstractapplicationcontext,com.spring.BeanFactoryPostProcessorDemo#0]; root of factory hierarchy
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
- /* ******with without spring********
+//property placeholder
+
+BeanFactoryPostProcessorDemo ob =(BeanFactoryPostProcessorDemo)context.getBean("propertyA");
+System.out.println(ob.getValueFromProperty());
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/*CODING TO INTERFACE
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/*To make best use ofspring is by coding to interface
+ * (means instead of having bean itself directlty, u use interface 
+ * then instead of using bean itself u use interface)
+ * ((advantage is that for instance  instead of calling method 
+ * draw from DrawingApp{main} using triangle obj then class shld not know it is calling draw method of triangle or any other sahape
+ * CREATE AN INTERFACE WRITE A METHOD WHICH HAS TO BE IMPLEMENTED BY ALL YOUR SHAPE in cALLING CLASS
+ * OR BEAN CLSS WILL IMPLEMENT THE METHOD AND USE IT FROM CALLING CLASS
+ */
+
+CodingToInterfaceDemo objinter=(CodingToInterfaceDemo)context.getBean("codingtointerace1");
+System.out.println(objinter.getType());
+
+CodingToInterfaceDemo objinterface=(CodingToInterfaceDemo)context.getBean("codingtointerace2");
+System.out.println(objinterface.getType());
+//this class now doesnt know whether it is calling which method using whose objj instead it is using interface
+//ie mthod of interface
+//LATER IF WE ADD NEW CLASS(eg rectangle) as lOng as it is implementing shape interface it an be used using same interface which is further implemented and customized in another class
+
+/*we are cncerned with meyhod of interface but not with the method of actual object*/
+//ALWAYS US E INTERFACE
+/*IF U CHANGE THE IMPLEMENTAION U DONT HAVE TO CHANGE CLASS WHICH DEPENDS ON THIS INTERFACE u just plugin the implementation */
+/*IN APPLICATION WE HAVE BUSINESS SERVICE DAO LAYERS
+ * INSTEAD OF CALLING BUSINESS SERVICE ONNBJECT FROM VIEW LAYER
+ * WHAT WILL HAPEEN IS WWE WILL HAVE INTERFACE OF BUSINESS SERVICE
+ * THE U WILL CAL THE METOD OF THAT INTERFACE THEN IMPLEMENTATION WILL BE LATER PLUGGED IN(SPECIFIC BUSINESS SERVIC EIMPLEMENTATION U HAVE CODED
+ * )
+ * iF WE HAVE TO CHANGE IT LATER NO NEED TO CHANGE VIEW JUST ADD SERVIC ELAYER IMPLEMENTATION
+ * AND REWIRE IT IIN SPRING XML
+ * 
+ * */
+
+/////////////////////////////////////////
+
+
+
+
+//ANNOTATION BASED CONTAINER CONFIGURATION
+//annotaion used for configuring bean spring supports
+/*1.@Required Anotation
+ * when in bean in xml dependency is not specified via properties and calling from get bean will result into null pointer exception
+ * if u specifu Require annotation in bean for setter it will throw exception during initialization preventiing to fail application duriing run time
+ * it prevent runtime exception so that required dependency is met
+ * example REQUIRED ON SETTER STATES THIS SETTER IS REQUIRED OR VALU HAS TO BE ASSIGNED TO IT
+ *IF NOT THERE throw  exceptionn not when code is running adn using this memebr variable to throw null pointer but exception is thrown
+ *when initialized 
+ *
+ *Note:For requied annotation bean post proccesor is doing the validation in  backed so declare in spring xml
+ *POst PROccer when all the bean are instantiated it will check for require annotation and if it find reuiere annotation member variable not initializaed it will throw exception
+ *it is in org.springframework.benfactoryannotation
+ *
+ *
+ * */
+
+RequiredAnnotation raObj =(RequiredAnnotation)context.getBean("RequiredAnno");
+System.out.println(raObj.getMessage());
+
+//on removing property from xml it will throw null pointer exception at runtime
+//if reuqired is set on settter and remove property it will throw exception during initialization 
+
+//==============================================================
+//AnnotationAUTOWIRED 
+//annotation for dependency wiring unlike @required
+//@Autowired LOKS forbean type in xml if multiple bean with same type then it will look for
+//bean name same with member variable which is autowired then it will assign property
+
+AutowiredAnnotation annObj =(AutowiredAnnotation)context.getBean("autowired");
+System.out.println(annObj.getMessage());
+
+
+
+//==============================================================
+//JSR 250 annotation JAVA Speciification Request annotation specifies annotation that are appllied at different technology and different frameworks
+
+//annnotaion from javax.annotation.Resource@Resource(name="{name of bean}") -can do standar dependency injection by name
+//if name is not specified then it will initialized bean with same name as member variable itself
+
+//2.) @PostConstruct annotation used for method initialization
+//@PreDestroyed used for destroy in  bean apart from (interface disposable initialization or init destrooy in spruing xml)
+//has to use abstract context and register hooks
+//==============================================================
+
+
+//@COMPONENT AND STEREOTYPE
+
+//Component tag is equavalent to bean definition/bean tag in xml having id and class
+//anotation are part of the class u can not have different instances of the bean of the same class
+//when bean defined in xml u can have more than one behavior define by having mmor than one propertyis
+/*but with annotation when u define component above class it can be onlyy ane instance
+{then either have three different classes or have meta data define in xml}
+//class get registered in spring ocntainer as a bean when @Compnent is used
+*this is the one disadvantage of using annotation or advantage of using xml
+
+*in xml mention tag that will let spring know where to scan for component bean
+*ie <context:component-scan base-package="com.spring"></context:component-scan>
+*
+*/
+
+/*component tag searches for few other annotation these annotation are called stereotypes
+ * 
+ * concpt of stereotype is as When we write enterprise application we have some standar beans that performs
+ * some standard rules we would have some data object we would have service class view,controllers
+ * thesea are the rules that spring bean performssin any enterprise application
+ * 
+ * so there are cnnotations that define bean to perform one of those roles
+ * ----->for service classs  @Service  [components tag will scan]
+ * ----->for fdata object @Repository
+ * ------>for coontroller @Controller it act as C in mVc sctructure
+ * @Component is kind of generic which teells it is bean those tags also tellls role
+ * */
+
+//==============================================================
+
+/* ******with without spring********
 "Design your objects so that they rely on an outside force to supply them with what they need, 
 with the expectation that these dependencies are always injected before anybody asks them to start doing their usual jobs
 Compare that against: "Each object is responsible for GOING out and finding everything and everybody it needs as it starts up."

@@ -1,250 +1,242 @@
-<?xml version = "1.0" encoding = "UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	<bean id="helloWorld" class="com.spring.BeanSimple">
+		<!-- <property name = "message" value = "Spring Test" /> -->
+		<constructor-arg value="CONSTRUCTOR INIT" />
+		<!--to initialize 
+			bean using constructor doesnt have name tag but only value attribute -->
+	</bean>
+	<bean id="helloWorldSingleton" class="com.spring.BeanScopeSingleton"
+		scope="singleton">
+		<!-- <property name="message" value ="Spring test Singleton" ></property> -->
+	</bean>
+	<bean id="helloWorldPrototype" class="com.spring.BeanScopePrototype"
+		scope="prototype"></bean>
+	<!-- use the init-method attribute to specify the name of the method that 
+		has a void no-argument signature. use the destroy-method attribute to specify 
+		the name of the method that has a void no-argument signature -->
+	<bean id="BeanInit" class="com.spring.BeanInitDestroy"
+		init-method="init" />
+	<bean id="BeanDestroy" class="com.spring.BeanInitDestroy"
+		destroy-method="destroy" />
+	<bean id="constructorOverloading" class="com.spring.BeanConstructorOverloading">
+		<!-- depending on the datatype 
+			required by constructor data conversion takes place taken care by sppring -->
+		<constructor-arg value="this is message 1" />
+	</bean>
+	<bean id="constructorOverloading2" class="com.spring.BeanConstructorOverloading">
+		<constructor-arg type="int" value="21" />
+		<!-- or mention 
+			the specific type of constructor that wante to call -->
+	</bean>
+	<bean id="constructorOverloading3" class="com.spring.BeanConstructorOverloading">
+		<constructor-arg type="String" value="again overloadedtime" />
+		<constructor-arg type="int" value="3" />
+		<!-- can also specifyindex 
+			depending on the order of parameter ie. index ="1" for 1st parameter in argument 
+			1 also index =2 for second argument -->
+	</bean>
+	<!-- OBJECT INJECTION -->
+	<!-- will create bean from referencing bean and assign to mmber varibale 
+		mentioned in property -->
+	<bean id="InjectObject" class="com.spring.ObjectInjection">
+		<!-- ask spring to get object from InjectObj 
+			id bean and set the property of InjectObject bean's property -->
+		<property name="Val" ref="InjectObj" />
+		<!-- value="" -->
+		<!-- value set is actually the reference to another bean in xml ie. having 
+			id InjectObj so instead of value tag attribute use ref attribute -->
+	</bean>
+	<bean id="InjectObj" class="com.spring.ObjectInjectionProvider">
+		<!-- can be called directly from main class using its id but instead we will 
+			link it to another bean returning an object -->
+		<property name="name" value="rishabh" />
+		<property name="contact" value="8867620765" />
+	</bean>
+	<!-- INNER BEANS -->
+	<!-- putting bean definition in property of another bean it's advantage 
+		is that bean is isolated to place where it is only requied -->
+	<bean id="innerbean" class="com.spring.InnerBean">
+		<property name="innerbeanval1" value="inner value 1" />
+		<property name="innerbeanval2" value="inner value 2" />
+		<property name="innerbeanval3">
+			<!--can have either value/ref/ or inner element value not work for for property 
+				when inner bean is configured coz inner bean wil process the value -->
+			<bean class="com.spring.BeanSimple">
+				<!-- inner bean can have id but of no use -->
+				<constructor-arg value="INNERBEAN FROM BEAN SIMPLE innerbeanval3" />
+			</bean>
+		</property>
+	</bean>
+	<!-- ALIAS -->
+	<alias name="helloWorldSingleton" alias="helloWorldSingletonALIASNAME" />
+	<!-- give a name of bean for u want to create an aliasand mention its alias 
+		name -->
+	<!-- COLLECTION -->
+	<bean id="collectionbean" class="com.spring.CollectionBean">
+		<property name="names">
+			<list>
+				<ref bean="InjectObj" />
+				<!-- can use this way to initialize value 
+					from database -->
+			</list>
+		</property>
+	</bean>
+	<bean id="autowire" class="com.spring.AutowiringBean" autowire="byName">
+		<!-- byName will see if member variable with the same name of bean id exist 
+			of bean id exist if yes it will create a reference automatically for that 
+			reference variable withput mentioning property for that bean -->
+	</bean>
+	<!-- member variable that has to be autowired it's name and bean id which 
+		is getting checked through autowired atribute byname shld be same -->
+	<bean id="autoVal1" class="com.spring.autowiringData">
+		<property name="autoName" value="rishabh autowired" />
+		<property name="autoContact" value="746546161 autowired" />
+	</bean>
+	<!-- Application context aware -->
+	<bean id="appcontextaware" class="com.spring.ApplicationContextAwareBean" />
+	<!-- bean name aware -->
+	<bean id="first" scope="prototype" class="com.spring.BeanNameAware" />
+	<bean id="second" scope="prototype" class="com.spring.BeanNameAware" />
+	<!--BEAN DEFINITION INHERITENCE -->
+	<!-- configuration for parent bean will be inherited even we dont call it 
+		explicitly but will call child bean -->
+	<bean id="parent" class="com.spring.BeanDefinitionInheritence">
+		<property name="name" value="rishabh" />
+		<property name="surname" value="mankatala" />
+		<property name="country" value="India" />
+	</bean>
+	<bean id="child1" class="com.spring.ChildBeanInheritence" parent="parent">
+		<property name="name" value="prateek" />
+		<property name="surname" value="mankatala" />
+		<!-- country member variable is not initialized still on calling from main 
+			class it will take its value from pripoperty of parent bean due to bean definition 
+			inheritence -->
+	</bean>
+	<!-- to merge element defined in the child bean to elements define in parent 
+		bean for the collection used in spring -->
+	<bean id="merge" class="com.spring.BeanListMerge" abstract="true">
+		<property name="mergeVal">
+			<list>
+				<value> 1st value </value>
+			</list>
+		</property>
+	</bean>
+	<bean id="mergelist" class="com.spring.BeanListMerge" parent="merge">
+		<property name="mergeVal">
+			<list merge="true">
+				<!-- with merge =tru o/p 1stvalue,2ndvalue withoout it will get override 
+					o/p 2ndvalue -->
+				<value>2nd value</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="abstractapplicationcontext" class="com.spring.AbstractApplicationContextBean">
+		<!-- on removing this it 
+			will work init-method="myInit" destroy-method="cleanUp" -->
+		<property name="name" value="abstractapplicationcontext" />
+		<!-- so when been is been initialized this method will be called mentioned 
+			in init-method alternate to afterPropertySet and destroy method of interface 
+			disposableBean and initializingBean -->
+	</bean>
+	<!-- //INSTEAD OF CONFIGURING INIT AND DESTROY methd for all the been seperately 
+		we can define it globally in BEANS tag using default-init-method attribute -->
+	<!-- if we remove bean post processor definition it will not work -->
 
-<beans default-destroy-method="cleanUp" default-init-method="myInit" xmlns = "http://www.springframework.org/schema/beans"
-   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation = "http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-   <bean id = "helloWorld" class = "com.spring.BeanSimple" >
-      <!--   <property name = "message" value = "Spring Test" /> -->
-      <constructor-arg value="CONSTRUCTOR INIT"/><!--to initialize bean using constructor doesnt have name tag but only value attribute -->
-  </bean>
-<bean id="helloWorldSingleton" class="com.spring.BeanScopeSingleton" scope="singleton">
-<!-- <property name="message"   value ="Spring test Singleton" >     </property>
- --></bean>
 
 
-<bean id="helloWorldPrototype" class ="com.spring.BeanScopePrototype" scope="prototype">
-</bean>
-
-
-<!--
-
- use the init-method attribute to specify the name of the method that has a void no-argument signature.
-  use the destroy-method attribute to specify the name of the method that has a void no-argument signature-->
-
-<bean id = "BeanInit" class = "com.spring.BeanInitDestroy" init-method = "init"/>
-<bean id = "BeanDestroy" class = "com.spring.BeanInitDestroy" destroy-method = "destroy"/>
-
-
-<bean id = "constructorOverloading" class="com.spring.BeanConstructorOverloading"><!-- depending on the datatype required by constructor
-											data conversion takes place taken care by sppring -->
-<constructor-arg value="this is message 1"/>
-
-
-</bean>
-
-
-
-<bean id = "constructorOverloading2" class="com.spring.BeanConstructorOverloading">
-
-<constructor-arg type="int" value="21"/><!-- or mention the specific type of constructor that wante to call
--->
-</bean>
-
-
-<bean id="constructorOverloading3" class="com.spring.BeanConstructorOverloading">
-<constructor-arg type="String" value="again overloadedtime" />
-<constructor-arg type="int" value="3"/><!-- can also specifyindex depending on the order of parameter
-ie. index ="1" for 1st parameter in argument 1 also index =2 for second argument -->
-</bean>
-
-
-<!-- OBJECT INJECTION -->
-
-<!-- will create bean from referencing bean and assign to mmber varibale mentioned in property  -->
-
-
-<bean id="InjectObject" class="com.spring.ObjectInjection"><!-- ask spring to get object from  
-InjectObj id bean and set the property of InjectObject bean's property-->
-<property name="Val"  ref="InjectObj"/> <!--  value=""--><!-- value set is actually the reference to another bean in xml 
-ie. having id InjectObj so instead of value tag attribute use ref attribute-->
-</bean>
-
-<bean id="InjectObj" class="com.spring.ObjectInjectionProvider">   <!-- can be called directly from main class using its 
-id but instead we will link it to another bean returning an object -->
-<property name="name" value="rishabh"/>
-<property name="contact"  value="8867620765"/>
-
-
-</bean>
-<!-- INNER BEANS -->
-
-<!-- putting bean definition in property of another bean 
-it's advantage is that bean is isolated to place where it is only requied--> 
-
-<bean id="innerbean" class="com.spring.InnerBean">
-
-
-<property name="innerbeanval1" value="inner value 1"/>
-<property name="innerbeanval2"  value="inner value 2"/> 
-<property name ="innerbeanval3" >  <!--can have either value/ref/ or inner element value not work for  for property when inner bean is configured coz inner bean wil process the value -->
+<!-- 	<bean class="com.spring.PostProcessorDemo" />   -->
 	
-<bean class="com.spring.BeanSimple"><!-- inner bean can have id but of no use -->
- <constructor-arg value="INNERBEAN FROM BEAN SIMPLE innerbeanval3"/>
-</bean>
-</property>
-</bean>
-
-
-<!-- ALIAS -->
-<alias name ="helloWorldSingleton" alias="helloWorldSingletonALIASNAME"/> <!-- give a name of bean  for u want to create an
- aliasand mention its alias name  -->
-
-
-<!-- COLLECTION -->
-
-
-<bean id="collectionbean" class="com.spring.CollectionBean">
-
-<property name="names">
-<list>
- <ref bean="InjectObj"/><!-- can use this way to initialize value from database -->
-
-</list>
-</property>
-
-</bean>
-
-
-
-<bean id="autowire" class="com.spring.AutowiringBean" autowire="byName">
-<!-- byName will see if member variable with the same name of bean id exist 
-of bean id exist if yes it will create a reference automatically for that 
-reference variable withput mentioning property for that bean  -->
-
-</bean>
-<!-- member variable that has to be autowired it's name and 
-bean id which is getting checked through autowired atribute byname shld be same -->
-<bean id="autoVal1" class="com.spring.autowiringData">
-<property name="autoName" value="rishabh autowired"/>
-<property name="autoContact" value="74654616
-1 autowired"/>
-</bean>
-
-<!-- Application context aware -->
-<bean id="appcontextaware" class="com.spring.ApplicationContextAwareBean"/>
-
-
-<!-- bean name aware -->
- <bean id="first" scope="prototype" class="com.spring.BeanNameAware"/>
- <bean id="second" scope="prototype" class="com.spring.BeanNameAware"/>
-
-<!--BEAN DEFINITION INHERITENCE  -->
-
-<!-- configuration for parent bean will be inherited even we dont call it explicitly
-but will call child bean -->
-
-<bean id="parent" class="com.spring.BeanDefinitionInheritence">
-<property name="name" value="rishabh"/> 
-<property name ="surname" value="mankatala"/>
-<property name="country" value="India"/>
-</bean>
-
-<bean id="child1"  class="com.spring.ChildBeanInheritence" parent="parent">
-<property name ="name" value="prateek"/>
-<property name="surname" value="mankatala"/>
-
-<!-- country member variable is not initialized
-still on calling from main class it will take its value from pripoperty of parent bean
-due to bean definition inheritence -->
-</bean>
-
-<!-- to merge element defined in the child bean to elements define in parent bean for the collection used in spring -->
-
-<bean id="merge" class="com.spring.BeanListMerge" abstract="true">
-<property name="mergeVal">
-<list>
-<value> 1st value </value>
-</list>
-</property>
-
-
-</bean>
-
-
-<bean id="mergelist" class="com.spring.BeanListMerge" parent="merge">
-
-<property name="mergeVal">
-<list merge="true">   <!-- with merge =tru o/p 1stvalue,2ndvalue
-withoout it will get override o/p 2ndvalue -->
-<value>2nd value</value>
-</list>
-</property>
-
-</bean>
-
-
-<bean id="abstractapplicationcontext"  class="com.spring.AbstractApplicationContextBean"><!-- on removing this it will work init-method="myInit" destroy-method="cleanUp"-->
-<property name="name" value="abstractapplicationcontext"/>
-<!-- so when been is been initialized this method will be called mentioned in init-method
-alternate to  afterPropertySet and destroy method of interface disposableBean and initializingBean -->
-</bean>
-
-<!-- //INSTEAD OF CONFIGURING INIT AND DESTROY methd for all the been seperately we can define it globally in BEANS tag using default-init-method attribute -->
-
-	<bean class="com.spring.PostProcessorDemo"/><!-- not creating id coxz no other class is dependent on this class we do not have to do get bean of this class -->
+	
+	
+	<!-- will be initialized post bean factory initialization -->
+	<bean class="com.spring.BeanFactoryPostProcessorDemo"/>
+	
+	<!-- not creating id coxz no other class is dependent on this class we do 
+		not have to do get bean of this class -->
 	<!-- we can also define order in which bean will execute -->
-
+	<bean id="propertyA" class="com.spring.BeanFactoryPostProcessorDemo">
+	<property name="valueFromProperty" value="${propertyA.value}"/>
+	
+	</bean>
+	<!--this will look for property file if any then will replace corresponsing property value in bean   -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="locations" value="PropertyFile.properties"></property>
+	
+	</bean>
+	
+	<!-- CODING TO INTERFACE -->
+	
+	<bean id="codingtointerace1" class="com.spring.UsingInterface">
+	<property name="message" value="CODE TO INTERFACE MSGFROM !ST BEAN"/>
+	
+	</bean>
+	<bean id="codingtointerace2" class="com.spring.UsingInterface2">
+	<property name="message" value="CODE TO INTERFACE MESSAGE FROM22nd BEAN"/>
+	
+	</bean>
+	
+	
+	<!-- post proccesspor  for  require annotation-->
+	<bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor">
+	
+	</bean>
+	
+	<bean id="RequiredAnno" class="com.spring.RequiredAnnotation">
+<property name="message" value="ReuiredValue" />
+	</bean>
+	
+	
+	<!-- AUTOWIRED ANNOTATION -->
+	<!--there is a post processor for autowired also that look for autowired  -->
+		<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+	
+	
+	<bean id="autowired" class="com.spring.AutowiredAnnotation">
+	<property name="message" value="Annotation@Value" />
+	</bean>
+	
+	<!-- this is alternative to call alll the post processor at once instead of calling seperately -->
+	<context:annotation-config/>
 	
 </beans>
-
-<!-- provide blue print for bean that we want to instantiate-->
-
-
-<!-- The Beans.xml is used to assign unique IDs to different beans and to control the creation of objects with different values without
- impacting any of the Spring source files. For example, using the following file you can pass any value for "message" variable and you can print
-  different values of message without impacting HelloWorld.java and MainApp.java files. -->
-  
-  
-  
-  <!-- When Spring application gets loaded into the memory, Framework makes use of the above configuration file to create all the beans 
-  defined and assigns them a unique ID as defined in <bean> tag. You can use <property> tag to pass the values of different variables used at the time of
-   object creation -->
-   
-   
-   
-   <!-- 
-  ** Spring BeanFactory Container
-This is the simplest container providing the basic support for DI and is defined by the org.springframework.beans.factory.BeanFactory interface. 
-The BeanFactory and related interfaces, such as BeanFactoryAware, InitializingBean, DisposableBean, are still present in Spring for the purpose 
-of backward compatibility with a large number of third-party frameworks that integrate with Spring.
- **Spring ApplicationContext Container
-This container adds more enterprise-specific functionality such as the ability to resolve textual messages from a properties file and the ability 
-to publish application events to interested event listeners. This container is defined by the org.springframework.context.ApplicationContext interface. -->
-
-
-
-
+<!-- provide blue print for bean that we want to instantiate -->
+<!-- The Beans.xml is used to assign unique IDs to different beans and to 
+	control the creation of objects with different values without impacting any 
+	of the Spring source files. For example, using the following file you can 
+	pass any value for "message" variable and you can print different values 
+	of message without impacting HelloWorld.java and MainApp.java files. -->
+<!-- When Spring application gets loaded into the memory, Framework makes 
+	use of the above configuration file to create all the beans defined and assigns 
+	them a unique ID as defined in <bean> tag. You can use <property> tag to 
+	pass the values of different variables used at the time of object creation -->
+<!-- ** Spring BeanFactory Container This is the simplest container providing 
+	the basic support for DI and is defined by the org.springframework.beans.factory.BeanFactory 
+	interface. The BeanFactory and related interfaces, such as BeanFactoryAware, 
+	InitializingBean, DisposableBean, are still present in Spring for the purpose 
+	of backward compatibility with a large number of third-party frameworks that 
+	integrate with Spring. **Spring ApplicationContext Container This container 
+	adds more enterprise-specific functionality such as the ability to resolve 
+	textual messages from a properties file and the ability to publish application 
+	events to interested event listeners. This container is defined by the org.springframework.context.ApplicationContext 
+	interface. -->
 <!-- 
-
-<?xml version = "1.0" encoding = "UTF-8"?>
-
-<beans xmlns = "http://www.springframework.org/schema/beans"
-   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation = "http://www.springframework.org/schema/beans
-   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-
-   A simple bean definition
-   <bean id = "..." class = "...">
-      collaborators and configuration for this bean go here
-   </bean>
-
-   A bean definition with lazy init set on
-   <bean id = "..." class = "..." lazy-init = "true">
-      collaborators and configuration for this bean go here
-   </bean>
-
-   A bean definition with initialization method
-   <bean id = "..." class = "..." init-method = "...">
-      collaborators and configuration for this bean go here
-   </bean>
-
-   A bean definition with destruction method
-   <bean id = "..." class = "..." destroy-method = "...">
-      collaborators and configuration for this bean go here
-   </bean>
-
-   more bean definitions go here
-   
-</beans> -->
+<?xml version = "1.0" encoding = "UTF-8"?><beans xmlns = "http://www.springframework.org/schema/beans"
+xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation 
+	= "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"> 
+	A simple bean definition <bean id = "..." class = "..."> collaborators and 
+	configuration for this bean go here </bean> A bean definition with lazy init 
+	set on <bean id = "..." class = "..." lazy-init = "true"> collaborators and 
+	configuration for this bean go here </bean> A bean definition with initialization 
+	method <bean id = "..." class = "..." init-method = "..."> collaborators 
+	and configuration for this bean go here </bean> A bean definition with destruction 
+	method <bean id = "..." class = "..." destroy-method = "..."> collaborators 
+	and configuration for this bean go here </bean> more bean definitions go 
+	here </beans> -->
