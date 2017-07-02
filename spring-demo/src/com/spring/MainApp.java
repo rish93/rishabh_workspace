@@ -432,6 +432,59 @@ System.out.println(annObj.getMessage());
 
 //==============================================================
 
+//APPLICATIONCONTEXT OVER BEAN CONTEXT
+
+
+/*support for messging and internationalization
+ * >if u want to display msg in program u need not keep in class or jsp but instead in common place lik eproperties file,
+ * .hence there is foile which consolidates key and value pair, u can specify key and get value assign to property key
+ *  >to enable property file define message source bean defined
+ * 
+ * 
+ * */
+//null for parameter
+//default msg if message is not found
+//locale for whic we want to sen msg
+
+
+
+
+//messaging using property
+System.out.println(context.getMessage("greeting",null,"default msg FROM PROPERTY FIILE",null));
+
+//event handling in SPRING
+
+//event handling covers three core component
+//1 EVENT Publisher (entity that publishes the event)
+//2 event listener(entity that listen to event)
+//3 class event itself
+/*
+Spring has 
+
+*/
+//==============================================================
+//ASPECT ORIENTED PROGRAMMING
+
+/*AOP is model of programming and also provided by spring
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
+
+
+
+
+
+
+
+
+//==============================================================
+
 /* ******with without spring********
 "Design your objects so that they rely on an outside force to supply them with what they need, 
 with the expectation that these dependencies are always injected before anybody asks them to start doing their usual jobs

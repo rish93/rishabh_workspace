@@ -206,6 +206,17 @@
 	<!-- this is alternative to call alll the post processor at once instead of calling seperately -->
 	<context:annotation-config/>
 	
+	<!-- message bundle source class out of box help in picking message from property -->
+	<!-- //member variable of type message source is defined any of the bean then mssgs from property can be used
+	used in AUtowiredAnnotation bean -->
+	<bean id="messagesource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<property name="basenames">
+	<list>
+	<value>mymessages</value>
+	</list><!-- when we have multiple property file wwe give inlist -->
+	</property>
+	</bean>
+	
 </beans>
 <!-- provide blue print for bean that we want to instantiate -->
 <!-- The Beans.xml is used to assign unique IDs to different beans and to 
