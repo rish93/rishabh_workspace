@@ -14,14 +14,18 @@
     
 	       <!--database connection setting sql dialect -->
 		    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/demo</property>
+		    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/demo</property><!--mention ip if db is remotely located  --> 
 		    <property name="hibernate.connection.username">root</property>
 		    <property name="hibernate.connection.password">root</property>
    
 	      <!-- jdbc connection pool (use the built-in) -->
-	      <property name ="connection.pool_size">1</property>
+	     <!--  --> <property name ="connection.pool_size">1</property>
+	      
 	      
 	      <!--sql dialect -->
+	   <!-- dialect is the configuration specidfied so that hibernate knows what language need to use to 
+	   talk to database way we run queries in oracle is different than in mysql
+	   since hibernate is writeing query for us it need to know which dialectto be used -->
 	      <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         
         <!-- disable the second level cache -->
@@ -31,15 +35,23 @@
       
       
       <!-- echo executed sql to stdout -->
+      <!-- hibernate wil print out all the sql it generates -->
       <property name="show_sql">true</property>
         
         
         <!-- drop and recreate database schema on startup -->
+        <!-- depending on what we configure model object its gonna create database schema to save those model object 
+ depneding on what we configure model objects its gonna create databse schema to save those model objects
+          we donot have to create table manuallyfor saving these objects. so set to create coz we donot have to do ourself
+          
+          We pass object to hibernate for saving object, hibernate will look at database to see if there is table to save these objects if there is not table hobernate will create table for us
+          it will -->
               <property name="hbm2ddl.auto">create</property>
         
         
         
         <!-- names the annotated entity class -->
+        <!-- list out all the model class we have configured here -->
         <mapping class="org.bitorder.hibernatedemo.dto.UserDetails"/>
         
         

@@ -34,8 +34,12 @@
       <property name="show_sql">true</property>
         
         
-        <!-- drop and recreate database schema on startup -->
-              <property name="hbm2ddl.auto">create</property>
+        <!--when building a new session factory obj on startup and 
+        hbm2ddl is set to create drop and recreate database schema on startup -->
+        <!-- to retain deta set it to update (then t only makes the change if its 
+        find the change in the model if it does not fingd the change
+        it will not create everything from scratch it will just add on to it)-->
+              <property name="hibernate.hbm2ddl.auto">update</property>
         
         
         
