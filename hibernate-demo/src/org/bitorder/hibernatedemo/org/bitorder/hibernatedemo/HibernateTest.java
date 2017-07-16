@@ -1,5 +1,7 @@
 package org.bitorder.hibernatedemo;
 
+import java.util.Date;
+
 import org.bitorder.hibernatedemo.dto.UserDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,7 +28,11 @@ eg if we wnat to save something get the session  from session factory and save*/
 		UserDetails user = new UserDetails(); 
 		user.setUserId(1);
 		user.setUsername("first user");
-		//to persist this object use hibernate appi
+		 user.setDate(new Date());
+		 user.setAddress("lko");
+		 
+		 
+		 //to persist this object use hibernate appi
 		//normally if this was service method we would pass this objdect to dao
 		//dao woul take care to save object using hibernate api
 		/*but here we will use saving object using service method itselff*/
@@ -74,6 +80,8 @@ eg if we wnat to save something get the session  from session factory and save*/
 	//hibernate is an ORM tool 
 	
 	
+	
+	//using hibernatea api to fetch objecrt we inserted
 	
 	
 	
