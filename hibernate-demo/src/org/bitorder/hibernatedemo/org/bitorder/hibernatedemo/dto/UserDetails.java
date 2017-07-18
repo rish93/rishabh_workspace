@@ -4,7 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -71,8 +74,8 @@ public class UserDetails {
 	public String getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddress(Address adrs) {
+		this.address = adrs;
 	}
 	
 	//if we have propeerty in our class and dont want to save it
@@ -88,7 +91,14 @@ public class UserDetails {
 		this.date = date;
 	}
 	//to make primary key//treat value of this field as primary key
-	@Id
+	@Id  @GeneratedValue(strategy=GenerationType.AUTO)//auto mean we will let hibernate make decision whtat strategy to use give value generated
+	/*Identity mean hi/*bernsate will use identitybcolumn(feature provided in some d/b)
+	//crreated a column and made it primay key 
+	 * 
+	 * *sequence -use to maintain sequesnce in d/b
+	 * table option  create seperate table will maintain last used  primary key so that u can increment it and get next value
+	 * AUTO IS RCOMENDED OPTION that depend on specific DATABASE
+	 * */
 	public int getUserId() {
 		return userId;
 	}
@@ -102,6 +112,34 @@ public class UserDetails {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+	
+	
+	
+	
+	/////////////////////////////////////////////
+	/*create a member variabe for address
+	*/
+	
+	
+	@Embedded  //not manadatory but can be sue d to clue hibernate this memebr variable shlf not have seperate table
+	
+	private Address adress;
+
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Address getAdress() {
+		return adress;
+	}
+	public void setAdress(Address adress) {
+		this.adress = adress;
+	}
+	
+	
+	
 	
 }
 

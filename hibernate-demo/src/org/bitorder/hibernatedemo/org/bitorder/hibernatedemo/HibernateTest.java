@@ -2,6 +2,7 @@ package org.bitorder.hibernatedemo;
 
 import java.util.Date;
 
+import org.bitorder.hibernatedemo.dto.Address;
 import org.bitorder.hibernatedemo.dto.UserDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -79,9 +80,71 @@ eg if we wnat to save something get the session  from session factory and save*/
 
 	//hibernate is an ORM tool 
 	
-	
+	session.close();//ideally session close is in finally block and we catch any exception by transaction.rollback
 	
 	//using hibernatea api to fetch objecrt we inserted
+	
+	user=null;
+	//second timee no need to create session factory objrct to get created (it is expensive oobj and require lot of resources to get created)
+	
+     session = sessionFactory.openSession();
+     session.beginTransaction();
+ 	user=(UserDetails)	session.get(UserDetails.class, 1);//tell the class for which you want  to retrieve which tells model object u want to retrieve//now tell data u wan  to retrive by tellling waht is primary key
+	//no need to tell key as already annotatted
+	System.out.println("retrieved user is"+user.getUsername());
+	
+	UserDetails user2 = new UserDetails();
+	user2.setUsername("rishabh2");
+	
+	user2.setAddress("sfss");
+	 user.setDate(new Date());
+	 user.setUsername("fdsgs");
+	session.save(user2);
+	
+	//natural vs surrogate key
+	//if in table we have column we know will have distinct value and also is mandatory 
+	//exmpple user registration applcation where user giving first last name email (business rule dictates that every user has to provide distict user id for registring)
+	//so we can have email adress as promary key, so sucg columns which are there fro business reason but then u assign one of them to be primary key
+	//such keys are natural keys
+	
+	/*surrogate- we have no column to be marked as unique or we anticipate that column value can be changed in future
+	 * in that case we add a new column act as a primary key alone it does not carry any business significance alone,we have column that only act as keyexmple serial no depicts each role for each row but have no busines use
+	 * */
+	/*we have to provide natural key by ourself but surrogate key can be provided by hibernate which can anything (adding onee to last entry)but unique not null mandatory*/
+	
+	
+	///////////////////////////////////////////////////////
+	//for the previous example we made sample that each memevr variable mamkes one colmn
+//	but what if one of the memebr variable is an object instead of simple datatupe like data varchar integer
+	/*and object has member variable inside of them what if one of them is an array list set how can w save thaat*/
+	
+	
+	
+	
+	//example user class has adress object and adress object has memebr variable
+	/*we will treat member variable of adress object same way we treat member varibale of user class this casse will work fine if inside user class there is value object*/
+
+	/*object in hibernate is of two types one is value object other is entity object
+entity .entity object are to be saved in dtaabase as seperate table	(or it is an entity mean it contains data and provide meaning to itself)
+value object is also having data and also will be saved in database but does not have its meaning in independent it provide meaning to other object
+
+example adress object having memebr variable zip  pin state city but adress object as of itself does no carry any meaning
+(together it has meaning ex adrersss of this user class same as name,phone of this user class)
+
+*/	
+	
+	
+	Address adrs = new Address();
+	
+	adrs.setStreet("up");
+	adrs.setCity("lko");
+	
+	
+	adrs.setPincode("226003");
+	adrs.setStreet("chk");
+	user2.setAdress(adrs);
+	
+	
 	
 	
 	
