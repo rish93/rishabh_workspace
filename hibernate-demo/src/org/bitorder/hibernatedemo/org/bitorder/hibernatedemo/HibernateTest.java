@@ -30,7 +30,7 @@ eg if we wnat to save something get the session  from session factory and save*/
 		user.setUserId(1);
 		user.setUsername("first user");
 		 user.setDate(new Date());
-		 user.setAddress("lko");
+	//	 user.setAddress("lko");
 		 
 		 
 		 //to persist this object use hibernate appi
@@ -89,17 +89,18 @@ eg if we wnat to save something get the session  from session factory and save*/
 	
      session = sessionFactory.openSession();
      session.beginTransaction();
- 	user=(UserDetails)	session.get(UserDetails.class, 1);//tell the class for which you want  to retrieve which tells model object u want to retrieve//now tell data u wan  to retrive by tellling waht is primary key
+    
+     user=(UserDetails)	session.get(UserDetails.class, 1);//tell the class for which you want  to retrieve which tells model object u want to retrieve//now tell data u wan  to retrive by tellling waht is primary key
 	//no need to tell key as already annotatted
 	System.out.println("retrieved user is"+user.getUsername());
 	
 	UserDetails user2 = new UserDetails();
 	user2.setUsername("rishabh2");
 	
-	user2.setAddress("sfss");
-	 user.setDate(new Date());
-	 user.setUsername("fdsgs");
-	session.save(user2);
+//	user2.setAddress("sfss");
+	 user2.setDate(new Date());
+	 user2.setUsername("fdsgs");
+	
 	
 	//natural vs surrogate key
 	//if in table we have column we know will have distinct value and also is mandatory 
@@ -132,26 +133,48 @@ example adress object having memebr variable zip  pin state city but adress obje
 (together it has meaning ex adrersss of this user class same as name,phone of this user class)
 
 */	
-	
-	
 	Address adrs = new Address();
 	
 	adrs.setStreet("up");
 	adrs.setCity("lko");
-	
-	
 	adrs.setPincode("226003");
-	adrs.setStreet("chk");
+	adrs.setState("chk");
 	user2.setAdress(adrs);
+
+	
+	//there is one implication of embedded member variable 
+		//for normal member we can configure each columna name use column annotation
+		//but for object type memebr we can change example city under address object how can we do using column annotation
+		//we can do it directly goint to city and use column annotationthere or
+		//we can use Annotation @ATTRIBUTEOVERRIDE(name="street",column=column(name="HOME_STREETNAME") to specify name change in column
+		//this could be done when we have two instance of same class like homeadress and oficeadresss and column name we have to make 
+		//different for each
+	session.save(user2);
+	session.getTransaction().commit();
+	session.close();
 	
 	
+	///////////////////////////////////////////////////////////
+	////////sving collection///////////////////////////////////
+	////////////////////////////////////////////////////////////
+	session = sessionFactory.openSession();
+    session.beginTransaction();
+    //what if we dont know how many address object we need when collection is a member variable
+	//scenario is we want all the places person lived to that address having list of address(no idea how many address expected)
+    //if there are fixed no of object we can make fix no of columns like if we have home addres office adress we can make seperate column for each
+    //but how many address object we aare having is not known
+   //how wee  willl design table---> we will create different table for the address data
+    //and will get reference to the users id eg we have user id 1 and have ffive address to that 
+   // thn will insert 5 records in seperate table called address table and each of the 5 table willl have user id one associated with it as foreign key
+  //  we know user 1 has 5 address associated with it.
+    //WEE WILL CREATE COLLECTION OF ADDRESS IN USER DETAILS ENTITY CLASS
+//INSTANTIATE IT    
 	
+    user.getListofAddresses().add(adrs);
+    session.save(user);
+    session.getTransaction().commit();
+	session.close();
 	
-	
-	
-	
-	
-	
+    
 	}
-	
 }

@@ -1,9 +1,11 @@
 package org.bitorder.hibernatedemo.dto;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 ///to tell hibernate not to create seperate table of it but instead it is value type object associated to some entity type use 
 //annotation embedded
+//not seperate coz it is value type object not entity type object
 
 @Embeddable
 public class Address {
@@ -25,6 +27,7 @@ public class Address {
 	public void setCity(String city) {
 		this.city = city;
 	}
+//	@Column(name="PIN")
 	public String getPincode() {
 		return pincode;
 	}

@@ -25,7 +25,7 @@
 				<exclusion>
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
-				 </exclusion>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -39,7 +39,7 @@
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
 		</dependency>
-		
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -71,7 +71,7 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-				
+
 		<!-- Servlet -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
@@ -121,7 +121,7 @@
 			<artifactId>rome</artifactId>
 			<version>1.5.0</version>
 		</dependency>
-		
+
 		<!-- JSR 303 with Hibernate Validator -->
 		<dependency>
 			<groupId>javax.validation</groupId>
@@ -133,7 +133,7 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.1.0.Final</version>
 		</dependency>
-		
+
 		<!-- Joda Time Library -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -159,7 +159,7 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${org.springframework.security-version}</version>
 		</dependency>
-			
+
 		<!-- Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -185,7 +185,7 @@
 			<version>0.8.1</version>
 			<scope>test</scope>
 		</dependency>
-  		<dependency>
+		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
 			<version>1.3</version>
@@ -198,20 +198,26 @@
 			<id>org.springframework.maven.snapshot</id>
 			<name>Spring Maven Snapshot Repository</name>
 			<url>http://repo.spring.io/snapshot</url>
-			<releases><enabled>false</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 		<!-- For developing against latest Spring milestones -->
 		<repository>
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>
 			<url>http://repo.spring.io/milestone</url>
-			<snapshots><enabled>false</enabled></snapshots>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		 <sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -253,7 +259,8 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>aspectj-maven-plugin</artifactId>
-				<!-- Have to use version 1.2 since version 1.3 does not appear to work with ITDs -->
+				<!-- Have to use version 1.2 since version 1.3 does not appear to work 
+					with ITDs -->
 				<version>1.2</version>
 				<dependencies>
 					<!-- You must use Maven 2.0.9 or above or these are ignored (see MNG-2972) -->
@@ -269,12 +276,8 @@
 					</dependency>
 				</dependencies>
 				<executions>
-					<!-- <execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution> -->
+					<!-- <execution> <goals> <goal>compile</goal> <goal>test-compile</goal> 
+						</goals> </execution> -->
 				</executions>
 				<configuration>
 					<outxml>true</outxml>
@@ -302,22 +305,10 @@
 </project>
 
 
-<!-- <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>spring-demo</groupId>
-  <artifactId>spring-demo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-</project> -->
+<!-- <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> 
+	<modelVersion>4.0.0</modelVersion> <groupId>spring-demo</groupId> <artifactId>spring-demo</artifactId> 
+	<version>0.0.1-SNAPSHOT</version> <build> <sourceDirectory>src</sourceDirectory> 
+	<plugins> <plugin> <artifactId>maven-compiler-plugin</artifactId> <version>3.5.1</version> 
+	<configuration> <source>1.8</source> <target>1.8</target> </configuration> 
+	</plugin> </plugins> </build> </project> -->
