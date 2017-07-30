@@ -175,7 +175,7 @@ public class UserDetails {
 	//COLLECTION
 	//an annotatiion is used to tell that it is a list and want to save this list
 	
-	@ElementCollection(targetClass=Address.class)//mark collection object to be persisted in hibernate, tells it is not embedded as seerate table
+	@ElementCollection/*(targetClass=Address.class)*///mark collection object to be persisted in hibernate, tells it is not embedded as seerate table
 	@CollectionTable(/*name="Address",describer the name of join table ie userdetails_listofAddresses*/ joinColumns=@JoinColumn(name="userId"))
 	
 	private Set<Address> ListofAddresses = new HashSet() ;//set is not implementation we have to give it implementation using new
