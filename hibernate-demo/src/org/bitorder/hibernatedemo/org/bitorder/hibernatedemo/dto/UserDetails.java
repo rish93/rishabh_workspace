@@ -29,9 +29,16 @@ import javax.persistence.Transient;
 import javax.transaction.Transactional;
 
 import org.hibernate.annotations.CollectionType;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
 
+@DynamicUpdate(value=true)
+//updates only the modified  values in the entity Hibernate needs to track those changes
+@SelectBeforeUpdate(value=true)
+/*creates a select before update to know which properties has been changed this is useful when the entity has been loaded and updated on different sessions Hibernate is out of tracking entity changes*/
 
-@Entity (name="USER_DETAIL") 
+@Entity (name="USER_DETAIL" ) 
 /*An Entity is roughly the same thing as an instance of a class
  *  when you are thinking from a code perspective or a row in a
  *   table (basically) when you are thinking from a database
@@ -169,7 +176,7 @@ public class UserDetails {
 	//an annotatiion is used to tell that it is a list and want to save this list
 	
 	@ElementCollection(targetClass=Address.class)//mark collection object to be persisted in hibernate, tells it is not embedded as seerate table
-	@CollectionTable(name="Address", joinColumns=@JoinColumn(name="userId"))
+	@CollectionTable(/*name="Address",describer the name of join table ie userdetails_listofAddresses*/ joinColumns=@JoinColumn(name="userId"))
 	
 	private Set<Address> ListofAddresses = new HashSet() ;//set is not implementation we have to give it implementation using new
 //if we have n no of collection object ihibernate will create n no of column in sub tables then depending on how many members are there 
