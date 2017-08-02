@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 //annotation embedded
 //not seperate coz it is value type object not entity type object
 
-@Embeddable
+//@Embeddable
 public class Address {
 
 	

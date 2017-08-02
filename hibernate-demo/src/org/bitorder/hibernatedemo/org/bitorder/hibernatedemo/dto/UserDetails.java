@@ -1,5 +1,7 @@
 package org.bitorder.hibernatedemo.dto;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,10 +31,13 @@ import javax.persistence.Transient;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.CollectionType;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SelectBeforeUpdate;
+import org.hibernate.annotations.Type;
 
 @DynamicUpdate(value=true)
 //updates only the modified  values in the entity Hibernate needs to track those changes
@@ -175,9 +181,16 @@ public class UserDetails {
 	//COLLECTION
 	//an annotatiion is used to tell that it is a list and want to save this list
 	
-	@ElementCollection/*(targetClass=Address.class)*///mark collection object to be persisted in hibernate, tells it is not embedded as seerate table
-	@CollectionTable(/*name="Address",describer the name of join table ie userdetails_listofAddresses*/ joinColumns=@JoinColumn(name="userId"))
 	
+	//{element collection is the feature whcih gets column value without mapping two tables}
+	@ElementCollection/*(targetClass=Address.class)*///mark collection object to be persisted in hibernate, tells it is not embedded as seerate table
+
+	//{CollectionTable will join tables for the given primary and foreign key}
+	//	@CollectionTable(/*name="Address",describer the name of join table ie userdetails_listofAddresses*/ joinColumns=@JoinColumn(name="userId")/*names the primary key of collection table*/)*/
+	//can also use another annotation
+	
+	@JoinTable(name="address",/*join column is prperty name which takes annotation
+	*/joinColumns=@JoinColumn (name="userid"))
 	private Set<Address> ListofAddresses = new HashSet() ;//set is not implementation we have to give it implementation using new
 //if we have n no of collection object ihibernate will create n no of column in sub tables then depending on how many members are there 
 	//ie no of record it will create rows
@@ -192,7 +205,34 @@ public class UserDetails {
 		ListofAddresses = listofAddresses;
 	}
 	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////CONFIGURING COLLECTION AND ADDING KEYS//////////////////////////////
+///////////////////////////////////////////////////////////////LECT 11//////////////////////////////////////////////////////////
+
+	//implemeting arraylist as memebr variable coz it has indexing property and can be use din table
 	
+	//not a javax persistence annotation but a unique annotation (persistence implementation by a
+	//standard body  that is hibernate specific which itself implemenattion JPA standard
+	/*though the specification is JPA the implementer is hibernate but in this case this feature is not providded by JPA 
+	 * its additional feature provided by hibernate alone 
+	 *///(if we are changing implementer from hibernate to something else all theese others would work except @CollectionId)*/
+	
+	
+	/*primary key in @Column how primary key to be generated  in generator Property
+	 * @type of the primary key*/
+	
+	
+	//inorder to have collection of object as memebrr varibale inside entity class we need to change data type of collection to something that supports IID
+	@GenericGenerator(name = "hilo-gen", strategy = "hilo")/*name the generator */
+	@CollectionId(columns = { @Column(name="ADDRESS ID") }, generator = "hilo-gen", type = @Type(type="long"))//primary key column to be long 
+	private Collection <Address> arrayListAddress = new ArrayList<Address>();
+
+	public Collection<Address> getArrayListAddress() {
+		return arrayListAddress;
+	}
+	public void setArrayListAddress(Collection<Address> arrayListAddress) {
+		this.arrayListAddress = arrayListAddress;
+	}
 	
 	
 	

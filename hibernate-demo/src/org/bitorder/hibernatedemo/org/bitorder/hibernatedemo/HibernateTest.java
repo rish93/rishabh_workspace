@@ -178,9 +178,24 @@ example adress object having memebr variable zip  pin state city but adress obje
 	/////////////////////////////////////////////////////CONFIGURING COLLECTION AND ADDING KEYS//////////////////////////////
 	///////////////////////////////////////////////////////////////LECT 11//////////////////////////////////////////////////////////
 
+	/*to define an id for collection whci is inside an entity class*/
+/*	ie index to column we need to have data type that supports indes we caannot
+	use HashSet for it*/
+
+	session = sessionFactory.openSession();
+    session.beginTransaction();
+	Address adrs3 = new Address();
 	
-	
-	
-	
+	adrs3.setStreet("up");
+	adrs3.setCity("lko");
+	adrs3.setPincode("226003");
+	adrs3.setState("chk");
+	user.getArrayListAddress().add(adrs3);
+	user.setUsername("Lect11");
+	user.setDate(new Date());
+	user.setDescription("CONFIGURING COLLECTION ADDING KEY");
+	session.save(user);
+    session.getTransaction().commit();
+	session.close();
 	}
 }
