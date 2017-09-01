@@ -3,6 +3,8 @@ package org.bitorder.hibernatedemo;
 import java.util.Date;
 
 import org.bitorder.hibernatedemo.dto.Address;
+import org.bitorder.hibernatedemo.dto.OneToOneMapping;
+import org.bitorder.hibernatedemo.dto.OneToOneVehicle;
 import org.bitorder.hibernatedemo.dto.UserDetails;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -185,17 +187,114 @@ example adress object having memebr variable zip  pin state city but adress obje
 	session = sessionFactory.openSession();
     session.beginTransaction();
 	Address adrs3 = new Address();
-	
+	UserDetails usr4=new UserDetails();
 	adrs3.setStreet("up");
 	adrs3.setCity("lko");
 	adrs3.setPincode("226003");
 	adrs3.setState("chk");
-	user.getArrayListAddress().add(adrs3);
-	user.setUsername("Lect11");
-	user.setDate(new Date());
-	user.setDescription("CONFIGURING COLLECTION ADDING KEY");
-	session.save(user);
+	usr4.setDescription("CONFIGURING COLLECTION ADDING KEY");
+	usr4.setDate(new Date());
+	usr4.setUsername("Lect11");
+	usr4.getArrayListAddress().add(adrs3);
+	
+	
+	session.save(usr4);
     session.getTransaction().commit();
 	session.close();
+	
+	
+	///////////////////////////////////////////////////////////////LECT 11//////////////////////////////////////////////////////////
+
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////PROXY OBJECT AND EAGER AND LAZY FETCH TYPE 12////////////////////////////////
+	
+	//if we want to get user details
+	session=sessionFactory.openSession();
+	//this used=r object has array list
+	user=(UserDetails)	session.get(UserDetails.class, 4);
+	//when we are doinf session get we are getting user object, user object has array list of addresses
+	//then does whole loist of addresses get pulled up, if yes then if there are 100 addresses of user if all 
+	//gte pulled up then what is cost and perfoemance impact 
+	session.close();
+	//hence hibernate doesnt load all we can also configur it expplicitly
+	user.getArrayListAddress();
+	System.out.println(user.getArrayListAddress().size());
+	
+	//when we do getList OF address then comlplete list is fetched
+	/*{this kind of sstrategy is called lazy initialization}
+	 * LAZY INITIALIZATION- depicts you do not initialize entire objects u only initialize first level variabled
+	 * (first level memeber variable of the objefts)then u initializa the list when u access it
+	 * defualt is lazy initialization
+	 * EAGER initialization states when object uses this initialization method gets all the related data corrs to this object
+	 *///it uses lot of resources and time
+	 /*
+	  * how getlist of address ret7rn every detail in object ei(user class{getID,getNAme,getListofAddress})
+	  * 
+	  * how it worksie when we call get lis of adress---{hibernate instead of getting
+	  * actual object u are looking for gets u the proxy for the first tuime }---
+	  *its the dynamiz sub class of your actual objetc we are looking for 
+	  * --we do session get of user classhibernate insread of giving user class directly ie getting all the value and packaging it into user class
+	   *proxy is a class that has same methods as user class
+	   *
+	   *--->it will also give inner method getid(),getname(),getlistofaddress() of proxy user class
+	   *----> each of the method will get called of user class method through proxy user class
+	   *--->we are handed over proxy user class, s when making call we will get method of getListOfAddress() of proxy object
+	   *,which will not have all the detial 
+	   */
+	//to check it is proxy objetc not actual user object before we get th list of addresses, or proxy object gets the list of data and saves to
+	//member variable, do a session close() before proxy object gets a chance to get the list of addresses
+	//the proxy object will not have session to get list of addresses
+	
+	//in lazy it will wait for fist accesss to fetch it while 
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////PROXY OBJECT AND EAGER AND LAZY FETCH TYPE////////////////////////////////
+	
+	
+	//////////////////////////////////////////////////////////
+	///one to one mapping   lect 13
+	//////////////////////////////////////////////////////////
+	
+	/* looking at entity within anothe rentity*/
+
+	OneToOneMapping oto = new OneToOneMapping();
+	 
+	OneToOneVehicle oto2= new OneToOneVehicle();
+	oto.setName("1to1 mapping eg");
+	
+	oto2.setVehiclename("car");
+	
+	oto.setOt(oto2);
+	session= sessionFactory.openSession();
+	session.beginTransaction();
+	
+	
+	//currently independent entities with no relation to have relation put one entities instance in another
+	//oto.setOt(oto2);//by doing this new column will come in onetoonemapping pointing to
+	//onetoonemappingvehicle id
+	
+	
+	session.save(oto2);
+	session.save(oto);
+    session.getTransaction().commit();
+	session.close();
+	
+	//////////////////////////////////////////////////////////
+	///one to one mapping   lect 13
+	//////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////
+	///one to many mapping   lect 14
+	//////////////////////////////////////////////////////////
+	
+	
+	
+	//////////////////////////////////////////////////////////
+	///one to many mapping   lect 14
+	//////////////////////////////////////////////////////////
+	
+
 	}
 }

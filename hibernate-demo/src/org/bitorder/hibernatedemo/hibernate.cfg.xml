@@ -36,13 +36,14 @@
         
         
         <!-- drop and recreate database schema on startup -->
-              <property name="hbm2ddl.auto">create-drop</property>
+              <property name="hbm2ddl.auto">create</property>
         <!-- to retain the schema use update -->
         
         
         <!-- names the annotated entity class -->
         <mapping class="org.bitorder.hibernatedemo.dto.UserDetails"/>
-        
+        <mapping class="org.bitorder.hibernatedemo.dto.OneToOneVehicle"/>
+ <mapping class="org.bitorder.hibernatedemo.dto.OneToOneMapping"/>
         
        <!--  
         <property name="hibernate.cache.use_query_cache">true</property>
