@@ -27,7 +27,7 @@ public class OneToOneMapping {
 	@OneToOne
 	private OneToOneVehicle ot;
 	
-	
+
 	public OneToOneVehicle getOt() {
 		return ot;
 	}
