@@ -1,8 +1,15 @@
 package org.bitorder.hibernatedemo;
 
+import java.lang.annotation.Annotation;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
 import org.bitorder.hibernatedemo.dto.Address;
+import org.bitorder.hibernatedemo.dto.OneToManyMapping;
+import org.bitorder.hibernatedemo.dto.OneToManyVehicle;
 import org.bitorder.hibernatedemo.dto.OneToOneMapping;
 import org.bitorder.hibernatedemo.dto.OneToOneVehicle;
 import org.bitorder.hibernatedemo.dto.UserDetails;
@@ -288,13 +295,40 @@ example adress object having memebr variable zip  pin state city but adress obje
 	//////////////////////////////////////////////////////////
 	///one to many mapping   lect 14
 	//////////////////////////////////////////////////////////
+	//now single user boject with multiple vehicle object will lead to one to many mappiing
+	//depending on how we arfe looking at it it can be many to one from vehicle to user
+	//or one to many from user to vehicle
+	
+	//join column is optional just like in one to one 
 	
 	
+
+	
+	
+	OneToManyMapping otm = new OneToManyMapping(); 
+	OneToManyVehicle otv = new OneToManyVehicle(); 
+	System.out.println("opening");
+
+	otv.setName("bus");
+	
+	otm.getOtom().add(otv);
+	otm.setLectNameOnetomany("Lect 14 one to many");
+	session = sessionFactory.openSession();
+	
+	
+	session.beginTransaction();
+	session.save(otm);
+	session.save(otv);
+	session.getTransaction().commit();
+	System.out.println("closing");
+	session.close();
+	
+    
 	
 	//////////////////////////////////////////////////////////
 	///one to many mapping   lect 14
 	//////////////////////////////////////////////////////////
-	
 
+	 
 	}
 }

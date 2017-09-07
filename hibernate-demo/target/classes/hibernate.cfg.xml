@@ -43,7 +43,10 @@
         <!-- names the annotated entity class -->
         <mapping class="org.bitorder.hibernatedemo.dto.UserDetails"/>
         <mapping class="org.bitorder.hibernatedemo.dto.OneToOneVehicle"/>
- <mapping class="org.bitorder.hibernatedemo.dto.OneToOneMapping"/>
+        <mapping class="org.bitorder.hibernatedemo.dto.OneToOneMapping"/>
+        <mapping class="org.bitorder.hibernatedemo.dto.OneToManyMapping"/>
+		<mapping class="org.bitorder.hibernatedemo.dto.OneToManyVehicle"/>
+ 
         
        <!--  
         <property name="hibernate.cache.use_query_cache">true</property>

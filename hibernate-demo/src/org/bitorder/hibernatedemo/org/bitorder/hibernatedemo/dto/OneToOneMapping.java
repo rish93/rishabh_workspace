@@ -23,7 +23,7 @@ public class OneToOneMapping {
 	//this entity but here vehicle is seperate entity needing seperate table
 	//after adding annotation associate vehicle with its other class
 	
-	//@JoinColumn(name="new name")
+	@JoinColumn(name="JoinedName")
 	@OneToOne
 	private OneToOneVehicle ot;
 	
@@ -46,6 +46,8 @@ public class OneToOneMapping {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
 	
 	
 	
