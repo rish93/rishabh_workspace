@@ -307,27 +307,83 @@ example adress object having memebr variable zip  pin state city but adress obje
 	
 	OneToManyMapping otm = new OneToManyMapping(); 
 	OneToManyVehicle otv = new OneToManyVehicle(); 
+	OneToManyVehicle otv2 = new OneToManyVehicle();
 	System.out.println("opening");
 
 	otv.setName("bus");
+	otv2.setName("car");
 	
-	otm.getOtom().add(otv);
+	otm.getOtom().add(otv);//here we added vehicle to user
+	otm.getOtom().add(otv2);
 	otm.setLectNameOnetomany("Lect 14 one to many");
+	
+	//in reverse r/n we can add user to ehicle as well
+	otv.setUser(otm);//setting bydirectional r/n
+	otv2.setUser(otm);//so in real world app we can get one from another 
+	//like user.getvehicle() or vehicle.getuser()
+	/*or we can have convenoience methos in any of the 
+	 * bean class
+	 * and do user.getvehicle.add(vehicle)
+	 * and also vehicle.setuser(user)
+	 * and can pass both user and vehicle iibject in convenience method to link both of them */
+	
 	session = sessionFactory.openSession();
 	
 	
 	session.beginTransaction();
 	session.save(otm);
+	session.save(otv2);
 	session.save(otv);
 	session.getTransaction().commit();
 	System.out.println("closing");
 	session.close();
 	
-    
+    /*
+     *select * from otm_mappingclass;
++----+---------------------+
+| id | LectNameOnetomany   |
++----+---------------------+
+|  1 | Lect 14 one to many |
+|  2 | Lect 14 one to many |
++----+---------------------+
+     * 
+     * 
+     * select * from otm_vehicleclass;
++-----------+------+
+| vehicleid | name |
++-----------+------+
+|         1 | car  |
+|         2 | bus  |
++-----------+------+
+     * 
+     * 
+     * 
+     *  otm_mappingclass_otm_vehicleclass;
++---------------------+----------------+
+| OTM_MappingClass_id | otom_vehicleid |
++---------------------+----------------+
+|                   2 |              1 |
+|                   2 |              2 |
++---------------------+----------------+
+     * third table will have primary id of both 
+     * */
 	
 	//////////////////////////////////////////////////////////
 	///one to many mapping   lect 14
 	//////////////////////////////////////////////////////////
+
+	
+	
+//////////////////////////////////////////////////////////
+///many to many mapping  &Mapped by lect 15
+//////////////////////////////////////////////////////////
+
+	
+	
+	
+//////////////////////////////////////////////////////////
+///many  to many mapping and mapped by  lect 15
+//////////////////////////////////////////////////////////
 
 	 
 	}

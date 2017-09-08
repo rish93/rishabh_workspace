@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,6 +19,9 @@ public class OneToManyMapping {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
+	@OneToMany
+	@JoinTable(name="USER_VEHICLE",joinColumns=@JoinColumn(name="USER_ID"),
+	inverseJoinColumns=@JoinColumn(name="VEHICLE_ID"))//inverse join column overrides other id that is getting embedded in table
 	private Collection <OneToManyVehicle>	otom = new ArrayList<OneToManyVehicle>();  //initialize as arraly list so that value is nnot null
 //on first addition	
 	private String LectNameOnetomany;
