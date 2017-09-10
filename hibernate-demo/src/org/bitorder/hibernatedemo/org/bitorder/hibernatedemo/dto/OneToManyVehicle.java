@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -20,6 +21,7 @@ public class OneToManyVehicle {
 	
 	//creating reverse relation ship(every vehickel has owner where vehicle points to owner)
 	@ManyToOne
+	@JoinColumn(name="USER_ID")//instead of creating new table column will be created inside vehicle table
 	private OneToManyMapping user;
 	//by reverse r/n whether we have user or vehicleobject we cn get 
 	//other object easily with corresponding getter

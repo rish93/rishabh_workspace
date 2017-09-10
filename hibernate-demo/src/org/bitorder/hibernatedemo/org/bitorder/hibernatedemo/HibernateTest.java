@@ -378,8 +378,19 @@ example adress object having memebr variable zip  pin state city but adress obje
 ///many to many mapping  &Mapped by lect 15
 //////////////////////////////////////////////////////////
 
+	/*there is one other way to represent one to many or many to one 
+	object relation apartc from letting hibernate to create seperate table of both id's
+	instead we can have user id column in vehcile (object on many side  should have reference to other side)
 	
-	
+	*
+	**as one user can hva emultiple vehicle but vehicle has one user
+	*putting vehicle id for user table may repeat user entry rows
+	*so put user in vehiclel **
+	*hence put user id in vehicle table itself  ??use mapped by in one to many annotation where u will write where u want mapping to happen
+	*ie object of user we want??
+	*
+	*
+	*/
 	
 //////////////////////////////////////////////////////////
 ///many  to many mapping and mapped by  lect 15

@@ -19,11 +19,13 @@ public class OneToManyMapping {
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@OneToMany
-	@JoinTable(name="USER_VEHICLE",joinColumns=@JoinColumn(name="USER_ID"),
+	
+	/*@JoinTable(name="USER_VEHICLE",joinColumns=@JoinColumn(name="USER_ID"),
 	inverseJoinColumns=@JoinColumn(name="VEHICLE_ID"))//inverse join column overrides other id that is getting embedded in table
-	private Collection <OneToManyVehicle>	otom = new ArrayList<OneToManyVehicle>();  //initialize as arraly list so that value is nnot null
-//on first addition	
+*/
+	@OneToMany(mappedBy="user")//where u want tomapping to happen in another table as seperate column
+    private Collection <OneToManyVehicle>	otom = new ArrayList<OneToManyVehicle>();  //initialize as arraly list so that value is nnot null
+    //on first addition	
 	private String LectNameOnetomany;
 	
 
