@@ -8,6 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name="OTM_VehicleClass")
 public class OneToManyVehicle {
@@ -21,6 +24,9 @@ public class OneToManyVehicle {
 	
 	//creating reverse relation ship(every vehickel has owner where vehicle points to owner)
 	@ManyToOne
+	@NotFound(action=NotFoundAction.IGNORE)
+	
+	
 	@JoinColumn(name="USER_ID")//instead of creating new table column will be created inside vehicle table
 	private OneToManyMapping user;
 	//by reverse r/n whether we have user or vehicleobject we cn get 

@@ -8,11 +8,23 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import org.bitorder.hibernatedemo.dto.Address;
+import org.bitorder.hibernatedemo.dto.CascadingUserClass;
+import org.bitorder.hibernatedemo.dto.CascadingVehicleClass;
+import org.bitorder.hibernatedemo.dto.FourWheelerInheritenceClass;
+import org.bitorder.hibernatedemo.dto.FourWheelerInheritenceJoined;
+import org.bitorder.hibernatedemo.dto.ManyToManyUserDetailClass;
+import org.bitorder.hibernatedemo.dto.ManyToManyVehicleListClass;
 import org.bitorder.hibernatedemo.dto.OneToManyMapping;
 import org.bitorder.hibernatedemo.dto.OneToManyVehicle;
 import org.bitorder.hibernatedemo.dto.OneToOneMapping;
 import org.bitorder.hibernatedemo.dto.OneToOneVehicle;
+import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceClass;
+import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceJoined;
+import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceTablePerClass;
 import org.bitorder.hibernatedemo.dto.UserDetails;
+import org.bitorder.hibernatedemo.dto.VehicleInheritenceClass;
+import org.bitorder.hibernatedemo.dto.VehicleInheritenceJoined;
+import org.bitorder.hibernatedemo.dto.VehicleInheritenceTablePerClass;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -392,9 +404,369 @@ example adress object having memebr variable zip  pin state city but adress obje
 	*
 	*/
 	
+	ManyToManyUserDetailClass mtmuser = new ManyToManyUserDetailClass(); 
+	ManyToManyUserDetailClass mtmuser2= new ManyToManyUserDetailClass();
+	
+	ManyToManyVehicleListClass mtmvehicle = new ManyToManyVehicleListClass(); 
+	ManyToManyVehicleListClass mtmvehicle2 = new ManyToManyVehicleListClass();
+	System.out.println("opening many to many");
+
+    session = sessionFactory.openSession();
+	
+    mtmuser.setUsername("first user");
+    mtmuser2.setUsername("second  user");
+    
+    
+    mtmvehicle.setVehicleName("first vehicle");
+    mtmvehicle2.setVehicleName("second vehicle");
+	//mtmuser.getVehicle().add("sdf");
+	session.beginTransaction();
+	
+	mtmuser.getVehicle().add(mtmvehicle);
+	mtmuser2.getVehicle().add(mtmvehicle);
+	mtmvehicle2.getUserList().add(mtmuser);
+	mtmvehicle.getUserList().add(mtmuser);
+	
+	session.save(mtmuser);
+	session.save(mtmuser2);
+	session.save(mtmvehicle);
+	session.save(mtmvehicle2);
+	session.getTransaction().commit();
+	System.out.println("closing many to many");
+	session.close();
+	//here hibernate does not know it hasto do one mappping so it create two 
+	//relation table  so tell hibernate by going to one of the bean class and tell 
+	//the other one for ehich it is mapped to ie if in table b we did mapped by object in a,,,then 
+	//only r/n table a_b will be created
+	
+	
+	//previously it was a_b and b_a
+	
+	/*
+
+mysql> select * from a;
++--------+--------------+
+| userid | username     |
++--------+--------------+
+|      1 | first user   |
+|      2 | second  user |
++--------+--------------+
+2 rows in set (0.01 sec)
+
+mysql> select * from b;
++-----------+----------------+
+| vehicleid | vehicleName    |
++-----------+----------------+
+|         1 | first vehicle  |
+|         2 | second vehicle |
++-----------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from a_b;
++-----------------+-------------------+
+| userList_userid | vehicle_vehicleid |
++-----------------+-------------------+
+|               1 |                 1 |
+|               2 |                 1 |
++-----------------+-------------------+
+2 rows in set (0.00 sec)
+	
+	*/
 //////////////////////////////////////////////////////////
 ///many  to many mapping and mapped by  lect 15
 //////////////////////////////////////////////////////////
+
+	
+	
+	
+//////////////////////////////////////////////////////////
+///cascading and other things  lect 16
+//////////////////////////////////////////////////////////
+
+//in manytoone if there is a vehicle not linked to any user,
+	//and in later code we try to get vehicle and assign user but 
+	//there is no user for associatiion for it
+	
+	//then hibernate will throw exception, we can suppres this exception using @NotNull
+/*u can say in not found annotation to what to do if user is not found*/
+	/*this can be used if we have legacy data and dont want to lose but want to manitain 
+	 * relation ship between table use NOTFOUND*/
+	
+	//------------------------------------------------------------
+	/*collection object that hbernate sopports
+	>hibernate has intrnal data type to ehich it maps to
+	for collection object that your'e creating
+	>thre are few semantics for collection that are available in
+	hibernate
+
+	1st seamntic is bag semantic-List/ArrayList we can implement bag semantic using list or arraylist
+
+	2nd is bag semantic with id--List/ArrayList
+	list and arraylist will have index property
+
+	3rd is List semantic -List/arraylist it is same as bag semantic but is ordered
+
+	4th is set semantic-- having set
+	5th is map semantic -having map similar to map datatype of java
+
+	*/
+	
+	//cascading
+	/*if we have 10 vehicle associated with user then will have to do 10 times save of that 
+	 * vehcile for that user same has to be done for delete and save*/
+	//there is a way to avoid this
+	CascadingUserClass cuser= new CascadingUserClass();
+	CascadingVehicleClass cvehicle = new CascadingVehicleClass();
+	CascadingVehicleClass cvehicle1 = new CascadingVehicleClass();
+	System.out.println("opening cascading");
+	cuser.setUsername("A");
+	cvehicle.setVehiclename("MICRA");
+	cvehicle1.setVehiclename("BRIO");
+	
+	session=sessionFactory.openSession();
+	session.beginTransaction();
+	
+	
+	
+	//what happen if we save only user where user 
+	//only has reltion with bith vehicle ,we are not explicitly saving them
+	//it will throw exception saying " object references unsaved transient instances "
+	//ie obejct u ares aving is referencing another object
+	//which is not saved why hibernate is not automatically sving
+	//coz sometimes u donot want to save them co they represent 
+	//seperate entites hibernate gives benefit of this doubt
+  
+	//session.save(cuser); change save to persist whenerve persiste happend cascade need to happen
+	//which will do persist this collectio  whne you are persisting this entity
+	cuser.getVehicleList().add(cvehicle);
+	cuser.getVehicleList().add(cvehicle1);
+	
+	
+	//session.save(cuser);
+	session.persist(cuser); //use persist with cascading
+
+//	session.save(cvehicle);
+//	session.save(cvehicle1);
+	
+	
+	
+	/*use cascade attribute in annotation many to one so that
+	 * it will tell if one objec is save then mutltiple object assoociated with it will also be save
+	 * 
+	 * 
+	 * do cascade type dellet during deletion operatiom
+	 * do cascade type merger when handling lifecylce of entity objectss*/
+	System.out.println("closing cascading");
+	//	
+	
+	
+	
+	
+	session.getTransaction().commit();
+	
+	session.close();
+	//////////////////////////////////////////////////////////
+///cascading and other things   lect 16
+//////////////////////////////////////////////////////////
+
+	
+	//////////////////////////////////////////////////////////
+	///implementing inheritence   lect 17
+	//////////////////////////////////////////////////////////
+	session=sessionFactory.openSession();
+//there is no equivalent of inheritence in relational model which is common in object orientation
+	//so how??
+	//now we will try to extend vehicle class to make two wheeler and four wheeler vehicle class
+	
+	//why we need inheritence, we can save them seperately tha will worlk,they are seperate entiyty
+	/*
+	 *               /two wheeler class
+	 * vehicl class<
+	 *               \  4 wheeler class
+	 * 
+	 * if there is user class that uses inheritence feature polymorphism
+	 * ie it instantiate at run time that what sub class it wants for references, without knowing it 
+	 * which class how can we set primary and foreign key in user and subcass of vehicle
+	 * userclass will have {id name,vehcile} during initialization
+	
+	 * */
+	
+	 VehicleInheritenceClass vehicle = new  VehicleInheritenceClass();
+	 TwoWheelerInheritenceClass twowheeler= new TwoWheelerInheritenceClass();
+	FourWheelerInheritenceClass fourwheeler= new FourWheelerInheritenceClass();
+	 
+	//we will explicitly not tell hibernate that we are inheritening, but just used inheritence of java
+
+	vehicle.setVehicleName("Car");
+	
+	
+	twowheeler.setVehicleName("DUCATI");
+	twowheeler.setSteeringHandle("BIKE HANDLE");
+	twowheeler.setName("SUB TABLE A");
+	
+
+
+	fourwheeler.setVehicleName("PORCHE");
+	fourwheeler.setSteeringWheel("CAR STEERING WHEEL");
+	fourwheeler.setName("SUB TABLE A");
+	
+	
+	session.beginTransaction();
+	
+	session.save(twowheeler);
+	session.save(fourwheeler);
+	session.save(vehicle);
+	
+	session.getTransaction().commit();
+	session.close();
+	//it will create same table  insert dtype,id and name and will mappe everything to its own table
+	//hibernate implemeted single table strategy, how many sub class u have it will crete common table for all the objects
+	//will create DTYPE column whucih is class name inherited
+	//DTYOPE is also called discriminator
+	//to find what type of object we are savonnig,we have seperate column which tells what class it is
+	///DTYPE helps us to tracke at what row wehave our particular object store
+	/*without using @Inheritence in parent class also hibernate implement single table starategy
+	 * for iother strategy,
+	 * 
+	 * 
+	 * */
+	
+	//////////////////////////////////////////////////////////
+	///implmenting inheritence lect 17 single table
+	//////////////////////////////////////////////////////////
+
+	
+	
+	//////////////////////////////////////////////////////////
+///implmenting inheritence lect 17 table per class strategy
+//////////////////////////////////////////////////////////
+
+	//we need to isolate each object for which table has to be created
+	//ie obj of vehicle,twowheele,fourwheer
+	//hence no requirement of Discriminator as seperate table is there we can direclty go that table if we want
+	
+	session=sessionFactory.openSession();
+	
+	 VehicleInheritenceTablePerClass vehicleperClass = new  VehicleInheritenceTablePerClass();
+	 TwoWheelerInheritenceTablePerClass twowheelerperclass= new TwoWheelerInheritenceTablePerClass();
+	 FourWheelerInheritenceClass fourwheelerperclass= new FourWheelerInheritenceClass();
+	session.beginTransaction();
+	vehicleperClass.setVehicleName("Car");
+	
+	
+	twowheelerperclass.setVehicleName("DUCATI");
+	twowheelerperclass.setSteeringHandle("BIKE HANDLE");
+	twowheelerperclass.setName("SUB TABLE A");
+	
+
+
+	fourwheelerperclass.setVehicleName("PORCHE");
+	fourwheelerperclass.setSteeringWheel("CAR STEERING WHEEL");
+	fourwheelerperclass.setName("SUB TABLE A");
+	
+	
+	
+	session.save(vehicleperClass);
+	session.save(twowheelerperclass);
+	session.save(fourwheelerperclass);
+
+	
+	session.getTransaction().commit();
+	session.close();
+	
+	/*parent class property are inherited
+	 * and form seperate colun
+	 * in child table
+	 * 
+	 * -->parent membe rvariable are formed as seperate column in child tables
+	 * -->Generated Value ie id used in parent class wiwll also be used in child class table
+	 * (its advantage is that we dont need discriminator to identify what type of object it is)
+	 *
+	 * 
+	 * it is also in normalizaed forom that is do not have extra column*/
+	
+	
+//////////////////////////////////////////////////////////
+///implmenting inheritence lect 17 table per class
+//////////////////////////////////////////////////////////
+
+	
+	
+	
+//////////////////////////////////////////////////////////
+///implmenting inheritence lect 22 JOINED COLUMN
+//////////////////////////////////////////////////////////
+/*previous ly in table per classs sub class were having column from parent class,making it repeatable
+ * this one is more normalized
+	
+	*
+	*
+	*
+	*
+	*
+	*/
+	session=sessionFactory.openSession();
+	
+	 VehicleInheritenceJoined vehiclejoined = new  VehicleInheritenceJoined();
+	 TwoWheelerInheritenceJoined twowheelerjoined= new TwoWheelerInheritenceJoined();
+	 FourWheelerInheritenceJoined fourwheelerjoined= new FourWheelerInheritenceJoined();
+	session.beginTransaction();
+	
+	vehiclejoined.setVehicleName("Car");
+	
+	
+	twowheelerjoined.setVehicleName("DUCATI");
+	twowheelerjoined.setSteeringHandle("BIKE HANDLE");
+	twowheelerjoined.setName("SUB TABLE A");
+	
+
+
+	fourwheelerjoined.setVehicleName("PORCHE");
+	fourwheelerjoined.setSteeringWheel("CAR STEERING WHEEL");
+	fourwheelerjoined.setName("SUB TABLE A");
+	
+	
+	
+	session.save(vehiclejoined);
+	session.save(twowheelerjoined);
+	session.save(fourwheelerjoined);
+
+	
+	session.getTransaction().commit();
+	session.close();
+	
+/*what will happen is two whheeler name and four wheeler nam ewil also
+ * be inserted in vehicle tavke*/
+	/*ie
+	vehicleid   vehiclename
+	1            Car
+	2            Bike
+	3            Porche
+	
+	
+	two wheeler table will hav e propert y that is pecific to two wheeler
+	
+	steeringhandle   vehicleid
+	Bikesteering     2
+	
+	
+	four wheeler table will hav e propert y that is pecific to four wheeler
+	
+	steeringhandle   vehicleid
+	steering     3
+	
+	
+	
+	hence to get complete data  we will use join query
+	select * from vehicle join FourWheeler on Vehicle.vehicleId=FourWheeler.VehiclId
+	
+	
+	it is more normalized data from parent table remain in parenty doot goyo child table
+	*/
+//////////////////////////////////////////////////////////
+	///implmenting inheritence lect 22 JOINED COLUMN
+//////////////////////////////////////////////////////////
+
 
 	 
 	}
