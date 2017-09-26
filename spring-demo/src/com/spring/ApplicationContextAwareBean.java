@@ -39,7 +39,7 @@ public class ApplicationContextAwareBean implements ApplicationContextAware,Bean
 		this.context=context;
 //		pobj=	(ApplicationContextAwareBean)context.getBean("contextaware");
 	//	System.out.print( pobj.getPobj());
-	System.out.println(context+"hiii");
+	System.out.println(context.getDisplayName()+"hiii");
 	}
 
 	@Override

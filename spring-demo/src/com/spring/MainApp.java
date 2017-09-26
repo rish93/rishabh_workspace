@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class MainApp {
    public static void main(String[] args) {
 	   // Triangle triangle = new Triangle(); instantiate triangle object  using new operator 
-	    //instantiate using bean factory to do it
+	  //instantiate using bean factory to do it
 //	    BeanFactory factory= new  XmlBeanFactory(new FileSystemResource("spring.xml"));
 //	    Triangle triangle1=(Triangle)factory.getBean("triangle");
 	    //why to use this method but not new coz
@@ -119,7 +119,7 @@ objE.setMessage("try!!");
  InnerBean ib= (InnerBean)context.getBean("innerbean");
  System.out.println(ib.getInnerbeanval1());
  System.out.println(ib.getInnerbeanval2());
- System.out.println(ib.getInnerbeanval3());
+ System.out.println(ib.getInnerbeanval3());//can write .getMessage() to test fata coming from simple bean which is inner
   
  //----------------------------------------------------------------------------------
 
@@ -153,7 +153,7 @@ objE.setMessage("try!!");
    //provided as tag for spring xml 
    
    CollectionBean cb=(CollectionBean)context.getBean("collectionbean");
-   System.out.println(cb.getNames());
+   System.out.println(cb.getNames().size()+"now");
 //----------------------------------------------------------------------------------
 //AUTOWIRING
   //autowiring a feature provided by spring framework
@@ -186,7 +186,15 @@ objE.setMessage("try!!");
    //----------------------------------------------------------------------------------
    
    //usinG APPLICATION CONTEXT AWARE?????????????
-//   ApplicationContextAwareBean awreObj =(ApplicationContextAwareBean)context.getBean("");
+   
+   
+   /*{magine we have an application (e.g. a web or swing-application) which we now want to be Spring-enabled.
+Ok we add the Spring libraries(spring.jar) and the Configuration-file(spring.xml) and create our Spring-beans. 
+But there are still some old class-files which you can’t use in this way. These files still need access to the 
+    * Spring-Honeypot where all the goodies exists and you don’t want to redesign your application.}
+*/
+   
+   //   ApplicationContextAwareBean awreObj =(ApplicationContextAwareBean)context.getBean("");
 //  System.out.print( awreObj.getPobj());
    //bad practise as it bind it to spring 
    //maybe if we need context in bean itself case1(for bean we need singleton context 
@@ -312,7 +320,9 @@ System.out.println(Abstractob.getName()+"\tline 262");
 //property placeholder
 
 BeanFactoryPostProcessorDemo ob =(BeanFactoryPostProcessorDemo)context.getBean("propertyA");
-System.out.println(ob.getValueFromProperty());
+System.out.println(ob.getValueFromProperty()+" BEANFACTORYPOSTPROCESSOR");
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -386,7 +396,7 @@ System.out.println(raObj.getMessage());
 //bean name same with member variable which is autowired then it will assign property
 
 AutowiredAnnotation annObj =(AutowiredAnnotation)context.getBean("autowired");
-System.out.println(annObj.getMessage());
+System.out.println(annObj.getMessage()+"AUTOWIRED MEMEBR VARIABLE"+annObj.getMessagesource().toString());
 
 
 

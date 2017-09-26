@@ -83,8 +83,16 @@
 				<ref bean="InjectObj" />
 				<!-- can use this way to initialize value from database -->
 			</list>
+			
 		</property>
+		
 	</bean>
+	
+	<!-- In Spring, “Autowiring by Type” means, if data type of a bean is compatible with the data type of other bean property, auto wire it.
+
+For example, a “person” bean exposes a property with data type of “ability” class, Spring will find the bean with same data type of class “ability” and wire it automatically. And if no matching found, just do nothing.
+
+You can enable this feature via autowire="byType" -->
 	<bean id="autowire" class="com.spring.AutowiringBean" autowire="byName">
 		<!-- byName will see if member variable with the same name of bean id exist 
 			of bean id exist if yes it will create a reference automatically for that 
@@ -158,7 +166,7 @@
 		not have to do get bean of this class -->
 	<!-- we can also define order in which bean will execute -->
 	<bean id="propertyA" class="com.spring.BeanFactoryPostProcessorDemo">
-		<property name="valueFromProperty" value="${propertyA.value}" />
+		<property name="valueFromProperty" value="${propertyA.value}" /><!-- reading property file -->
 
 	</bean>
 	<!--this will look for property file if any then will replace corresponsing 
@@ -194,8 +202,7 @@
 
 	<!-- AUTOWIRED ANNOTATION -->
 	<!--there is a post processor for autowired also that look for autowired -->
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 
 
 	<bean id="autowired" class="com.spring.AutowiredAnnotation">

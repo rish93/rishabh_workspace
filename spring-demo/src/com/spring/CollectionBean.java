@@ -13,6 +13,7 @@ public class CollectionBean {
 
 	public void setNames(List<ObjectInjectionProvider> names) {
 	
+		
 		//this.names.set(0, names.get(0));
 		this.names = names;
 	}
