@@ -36,7 +36,7 @@
         
         
         <!-- drop and recreate database schema on startup -->
-              <property name="hbm2ddl.auto">create-drop</property>
+              <property name="hbm2ddl.auto">update</property>
         <!-- to retain the schema use update -->
         <!-- e.g. validate | update | create | create-drop
 So the list of possible options are,
@@ -75,6 +75,12 @@ create-drop: drop the schema when the SessionFactory is closed explicitly, typic
   <mapping class="org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceJoined"/>
 		 <mapping class="org.bitorder.hibernatedemo.dto.FourWheelerInheritenceJoined"/>
 		 <mapping class="org.bitorder.hibernatedemo.dto.VehicleInheritenceJoined"/>
+	
+	
+	
+	 <mapping class="org.bitorder.hibernatedemo.dto.CrudOperationClass"/>
+	
+	<mapping class="org.bitorder.hibernatedemo.dto.TransientPersistenceDetachedUserDetailsClass"/>
 		
        <!--  
         <property name="hibernate.cache.use_query_cache">true</property>

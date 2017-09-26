@@ -2,6 +2,7 @@ package org.bitorder.hibernatedemo;
 
 import java.lang.annotation.Annotation;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -10,6 +11,7 @@ import javax.persistence.OneToMany;
 import org.bitorder.hibernatedemo.dto.Address;
 import org.bitorder.hibernatedemo.dto.CascadingUserClass;
 import org.bitorder.hibernatedemo.dto.CascadingVehicleClass;
+import org.bitorder.hibernatedemo.dto.CrudOperationClass;
 import org.bitorder.hibernatedemo.dto.FourWheelerInheritenceClass;
 import org.bitorder.hibernatedemo.dto.FourWheelerInheritenceJoined;
 import org.bitorder.hibernatedemo.dto.ManyToManyUserDetailClass;
@@ -18,6 +20,7 @@ import org.bitorder.hibernatedemo.dto.OneToManyMapping;
 import org.bitorder.hibernatedemo.dto.OneToManyVehicle;
 import org.bitorder.hibernatedemo.dto.OneToOneMapping;
 import org.bitorder.hibernatedemo.dto.OneToOneVehicle;
+import org.bitorder.hibernatedemo.dto.TransientPersistenceDetachedUserDetailsClass;
 import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceClass;
 import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceJoined;
 import org.bitorder.hibernatedemo.dto.TwoWheelerInheritenceTablePerClass;
@@ -25,6 +28,7 @@ import org.bitorder.hibernatedemo.dto.UserDetails;
 import org.bitorder.hibernatedemo.dto.VehicleInheritenceClass;
 import org.bitorder.hibernatedemo.dto.VehicleInheritenceJoined;
 import org.bitorder.hibernatedemo.dto.VehicleInheritenceTablePerClass;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -767,7 +771,233 @@ mysql> select * from a_b;
 	///implmenting inheritence lect 22 JOINED COLUMN
 //////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////
+///implmenting CRUD lect 23
+//////////////////////////////////////////////////////////
 
+	
+	session=sessionFactory.openSession();
+	session.beginTransaction();
+	//create
+/*	for(int i=0;i<10;i++){
+	CrudOperationClass crud = new CrudOperationClass();
+	
+	crud.setName("USER"+i);
+	session.save(crud);
+	}
+	*/
+	//fetch
+	
+/*CrudOperationClass crud=	(CrudOperationClass)session.get(CrudOperationClass.class, 6);//(classs of object we going to get,primary key)
+	System.out.println("user name 6th is"+crud.getName());
+	session.getTransaction().commit();
+	session.close();
+*/
+
+	//delete
+	
+	//1st pull up object
+//	CrudOperationClass crud=	(CrudOperationClass)session.get(CrudOperationClass.class, 6);//(classs of object we going to get,primary key)
+//	System.out.println("user name 6th is"+crud.getName());
+//	//2nd delete it
+//	session.delete(crud);
+//	
+//	session.getTransaction().commit();
+//	session.close();
+
+	
+	//update
+	
+//	CrudOperationClass crud=	(CrudOperationClass)session.get(CrudOperationClass.class, 5);//(classs of object we going to get,primary key)
+//	System.out.println("user name 6th is"+crud.getName());
+//	crud.setName("updated name");
+//	
+//	session.update(crud);
+//	
+//	session.getTransaction().commit();
+//	session.close();
+	
+//////////////////////////////////////////////////////////
+///implmenting              CRUD lect 23 
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+///implmenting             24 Transient persitent object
+//////////////////////////////////////////////////////////
+
+	TransientPersistenceDetachedUserDetailsClass   transuser= new TransientPersistenceDetachedUserDetailsClass();
+	
+	transuser.setName("transdemo");
+	
+	
+	session=sessionFactory.openSession();
+	session.beginTransaction();
+	
+	session.save(transuser);
+	
+	//saving in db is two step process first is to instantiate
+	//and then pass it to save method to save it too db
+	//so objet initializaeed without makin  it to save is called is transient objetc or object not persisted
+	//when it is save it is called persistent and hibernate can track that object
+	
+	
+	//if we try to set user after save
+	transuser.setName("user updated");
+	//value will reflect change in database
+	//hence any change nade after save will go as update statement in database
+	//ie last state of object will be reflected in database
+	transuser.setName("user updated again");
+	//not every change u make triggers an update query
+	/*hibernate figure out what is least no of update
+	 * that need to be made
+	 * whyen u make a save
+	 * hibernate watch that object for any changes made
+	no matter what change u make hibernate fire update query
+	*{before an ovbject is handed over to hobernate it is transient obhect
+	*after handling it tto save we are giving hibernate to mtake control 
+	*to make objetc state matches database state
+	*}
+	*/
+	
+
+	
+	session.getTransaction().commit();
+	session.close();
+//once we make session close it forms detached object	
+	//detached object is like transient object in a sense that hibenrate is not going to track 
+	//the changes,changes made will not going to be persisted in database
+	//detahced mean it was trackd before and waas persisted by hibernate befores
+	
+	//transient stae hibernate has not even looked at that objext
+//////////////////////////////////////////////////////////
+///implmenting              Transient persitent object 24 
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+///implmenting            State changes  25
+//////////////////////////////////////////////////////////
+
+	
+	//----for create operation
+	//4after new() it is transient
+	//after session.save() it will be in persistent state
+	//after session.close() it will be detached
+	
+	//------for Read operation
+	//session.get() persistence by   default we get it as persistent but can change it to trabsient
+	//session.close  detahced
+	
+	//-------update -can happe  in both of the ways in
+	//ie can be done in trad or create operatiom 
+	//means we can make changes in persisted dtate any time 
+	
+	//--------Delete
+	//mean ehen we deleye something from dataabse, nothing to save or update hence it goes back to trabsient
+	//by saving it again it goes back  to persitent
+	
+	
+	
+//////////////////////////////////////////////////////////
+///implmenting             state changes24 
+//////////////////////////////////////////////////////////
+
+	
+//////////////////////////////////////////////////////////
+///implmenting           Persisting detached object 25
+//////////////////////////////////////////////////////////
+	//@org.hibernate.annotations.Entity(selectBeforeUpdate=true:)
+	
+	
+	
+	/*if we fetch something from db, then do some user input to it
+	 * then again do that DB update we persiste it ti databse*/
+	
+	/*so showing it to user ,user may take some time to update
+	 * so iit will take time to get persisted
+	 * dont know how longneed it will take to wait for update to make*/
+	//it is not good idea to have all get and update in same transaction
+	
+	//so we can make one session and get the object ,
+	//then open another session when update is don e by user and persist it to datatbsse
+	
+	//so there is problem in this apprioach when we gett the databse value and and close 1st session to open another for 
+	//update it will get detached,
+	//so how can we move this object from detahced to persistent state
+	
+	session=sessionFactory.openSession();
+	session.beginTransaction();
+	
+	
+	TransientPersistenceDetachedUserDetailsClass trans =(TransientPersistenceDetachedUserDetailsClass)session.get(TransientPersistenceDetachedUserDetailsClass.class, 1);
+	//now trans object can be used to render the view
+	
+	session.getTransaction().commit();
+	session.close();
+	
+	///////////////////////
+	//here we will have updated value
+	//so
+	//trans.setName("updating after session close");
+	//it will not update in databse as it is doen after session close
+	//hibernate has figured out what row to update after sessionsave
+	
+	
+	
+	//there must be a method by whic we can make object persistent again
+	
+	session= sessionFactory.openSession();
+	session.beginTransaction();
+	//trans.setName("after update");
+	session.update(trans);
+	
+	//if we do set after update
+	
+	
+	session.getTransaction().commit();
+	session.close();
+
+	
+	
+	//if we do not set anything between both transaction and run still it will update 4
+//	coz hibernte not know about changes
+	//henche in entitty class use another annotation
+	//@org.hibernate.annotations.Entity(selectBeforeUpdate=true:)
+	//on doing this entiyy attache itself to persistent state
+	//it will runn select and get current state of data
+	//when it will see state is same it will not going to fire update quesry
+	//////////////////////////////////////////////////////////
+	///implmenting           Persisting detached object 25 
+	//////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////
+	///implmenting          selct and pagination in hibernateobject 25 
+	//////////////////////////////////////////////////////////
+
+	
+	session=sessionFactory.openSession();
+	session.beginTransaction();
+	Query query=session.createQuery("from TransientPersistenceDetachedUserDetailsClass ");/*where id > 2*/
+	query.setFirstResult(3);
+	
+	//this will make sure ex we make select* and have 10 recrods, it will go five result below the that willl be the first result
+	//use query .setfirst result to get start of my results we are interested in
+	List<TransientPersistenceDetachedUserDetailsClass> name=(List<TransientPersistenceDetachedUserDetailsClass>) query.list();
+	session.getTransaction().commit();
+	//hibernate uses pagination by configuring object
+	session.close();
+	for(TransientPersistenceDetachedUserDetailsClass u: name)
+	{
+	System.out.println(u.getName());	
+		
+	}
+	
+	
+	//////////////////////////////////////////////////////////
+	///implmenting       selct and pagination in hibernateobject 25
+	//////////////////////////////////////////////////////////
+
+		
+	
 	 
 	}
 }
