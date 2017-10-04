@@ -178,9 +178,10 @@ showElementsPers(listpers);
 	
 	public static void showElementsPers(Collection<person2> col)
 	{
-		for(person2 s:col)
-		{
-			System.out.println(s);
-		}
+			System.out.println("=======================================");
+			for(person2 s:col)
+			{
+				System.out.println(s);
+			}
 	}
 }
