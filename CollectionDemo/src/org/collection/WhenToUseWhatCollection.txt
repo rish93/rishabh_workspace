@@ -1,0 +1,66 @@
+List or Set or Map
+
+(consider)
+1) what u need collection to do
+2) are we using fastest collection(retrieval,deletion,insertion)
+for our purpose
+
+
+///////////LIST/////////////////
+*Store list of object
+*duplicate are allowed
+*object remain in order
+*object are inddexed by an integer
+eg.. shopping list
+//checking for particular item in list is slow
+//looking an item up index is fast
+//iterating through list is relatively fast
+//we can sort list if we want to
+//if we only add or remove items at end of list use arraylist ***List<String ls= new ArrayList<String>();***
+
+//if we removing  adding item elsewhere  in list use linked list***ist<String ls= new LinkedList<String>();****
+
+L
+
+
+///////////SET/////////////////
+*Only store unique values
+* great for removing duplicates
+not indexed,unlike list
+//very fast to check if particular object exists
+//if u want  to use ur own object, u must implement hashcode() and equals()
+//by this set will able to know if two objects are same object or not
+//use when order is unimportant
+
+hashset is not ordered, and cane besubject to chenge at random
+Set<String > set2 = new HashSet<String>();
+
+TreeSet is used to sort in natural order//must implement comparable for ccustom object
+Set<String> set2= new TreeSet<String>();
+
+//for element to be remain in order they were added use linked hash set
+Set<String> set3= new LinkedHashSet<Strig>();
+
+/////////////////////MAP///////////////////////////
+
+
+*Key value pairs
+*like lookup tables
+*retrieving  avalue by key is fast
+*iterating over map is slow
+*if u want your own object as keys u must implement hashcode() and equals()
+
+
+
+***keys in any order ,and order liable to chenge
+Mapp<String,String> map1= new HashMap<String, String>();
+
+***key remain in natural order   /must implement comparable for ccustom object
+Map<String,String> map2= new TreeMap<String,String>();
+
+
+***key remain in order added   
+Mao<String,String> map3 = new LinkedHashMap<Strikng,String>();
+
+//also SortedSet and SortedMap interfaces can be used
+
