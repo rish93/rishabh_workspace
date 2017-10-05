@@ -12,8 +12,6 @@ public class IterableDemo {
 		
 		UrlLibrariesIterableProvider urls= new UrlLibrariesIterableProvider();
 		
-		//after implementing iterable interface and returning iterator object from that class
-		//we can use
 		
 		for(String s:urls)
 		{System.out.println(s);
