@@ -1,0 +1,22 @@
+
+-http://localhost:9999/RESTfullApp/rest/hello/rishabh<==url for rest api request
+
+-rishabh ==>is response
+-localhost:9999 is tomcat running on machine
+-RestfullApp is project name deployed in tomcat ie application context
+
+this appliation is configure to accept rest api request through /rest/* url  in web xml
+this is how creator of archtype has designed that is there in archtype tepmplate
+
+-/hello/{name} is a resource, like msg and comments they resource
+
+-servlet basically loads the default page(index.jsp ) when root context is loaded
+
+- for spring mvc, struts servlet is aonly way to handle request for web appliction
+
+-there some kind of servklet that does bootstrap,servlet that is handling a request
+
+-jersey servlet is mapped to url pattern rest/*  (this is standar part in jax rs)
+//after this there will be resource handling classes
+//jersey doesnt know after starting point of request and expects code to handle reques
+//any resource request that comes in is handled by class having login that is written
