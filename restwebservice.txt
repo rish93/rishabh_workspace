@@ -20,3 +20,26 @@ this is how creator of archtype has designed that is there in archtype tepmplate
 //after this there will be resource handling classes
 //jersey doesnt know after starting point of request and expects code to handle reques
 //any resource request that comes in is handled by class having login that is written
+
+
+postman makes a request and let u examine the respponse for get, put ,post ,delete
+
+wec can see cookies tab, which will tll cookies this site is assigning
+//header tab will have header value for response
+content-length →340
+content-type →text/xml
+date →Mon, 16 Oct 2017 09:03:47 GMT
+server →Apache-Coyote/1.1///
+or request header value
+
+
+//for post request we see form data, url encoded data, and raw
+//for put post we can enter eequest body
+
+//click params, which include parameters..to be entere that are key valeu after qustion mark
+//drop down allow to access http method to be used along url 
+
+//we also can enter header key value pair
+
+
+/*instead of database we can use in memory setupr object which act as database*/

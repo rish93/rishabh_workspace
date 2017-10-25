@@ -41,7 +41,7 @@
         
         
         <!-- names the annotated entity class -->
-        <mapping class="com.fpss.xchange_providers.DAO.SaveProviders"/>
+        <mapping class="com.jwt.DAO.MessageDAOImpl"/>
         
         
      
